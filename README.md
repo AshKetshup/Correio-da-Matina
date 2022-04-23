@@ -65,6 +65,6 @@ servidor(es).
 ### Autores
 
 - ```Diogo Simões | a41266``` 
-- ```Luis Santos  | a41400```
+- ```Luis Espírito Santo  | a41400```
 - ```Nuno Ferreira| aXXXXX```
 - ``` ----------- | aXXXXX```
