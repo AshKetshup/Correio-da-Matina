@@ -1,7 +1,7 @@
 package pt.ubi.sd.g16.server;
 
 import pt.ubi.sd.g16.client.ClientInterface;
-
+import org.json.simple.*;
 import java.rmi.*;
 
 public class ServerMain extends java.rmi.server.UnicastRemoteObject implements ServerInterface {
