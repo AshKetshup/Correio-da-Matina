@@ -4,6 +4,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.ArrayList;
 
+import Client.Subscrition_listener;
+
 public interface Servidor_noticias_interface extends java.rmi.Remote{
 	
 	//open the file containing login info
@@ -57,9 +59,9 @@ public interface Servidor_noticias_interface extends java.rmi.Remote{
 	
 	
 	//subscrever tópicos de noticias
-	//substituir pelos callbacks
-	public void notificar() throws java.rmi.RemoteException;
+	public void subscribe_news(Subscrition_listener sl) throws java.rmi.RemoteException;
 	
+	//public String get
 	
 	
 	//armazenar noticias no server backup

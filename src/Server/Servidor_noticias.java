@@ -3,6 +3,7 @@ package Server;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.util.Random;
 
 import Server.Servidor_noticias_impl;
 import Server.Servidor_noticias_interface;
@@ -14,6 +15,7 @@ public class Servidor_noticias {
 		System.setSecurityManager(new SecurityManager()); 
 		
 		try { 
+			
 			// Iniciar a execução do registry no porto desejado
 			java.rmi.registry.LocateRegistry.createRegistry(1099); 
 			System.out.println("RMI registry ready."); //possivelmente eliminar ou substituir isto
@@ -29,6 +31,15 @@ public class Servidor_noticias {
 			Naming.rebind("CorreioDaMatina", objRemoto); 
 			System.out.println("Remote object ready");
 			
+			
+			
+			
+			//Create the thread to verify news posted and respective topics 
+            Thread lThread = new Thread((Runnable) objRemoto);
+            lThread.start();
+			
+		
+		
 		} catch (MalformedURLException | RemoteException e) {
 			System.out.println(e.getMessage()); 
 		}

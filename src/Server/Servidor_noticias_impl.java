@@ -12,7 +12,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
+import Client.Subscrition_listener;
 import myInputs.Read;
 
 
@@ -259,13 +262,13 @@ public class Servidor_noticias_impl extends UnicastRemoteObject implements Servi
 	}
 
 //----------- NOTIFICAÇÃO DE PUBLICAÇÃO DE NOTICIA A PESSOAS SUBSCRITAS A UM CERTO TÓPICO
-	
+	private List<Subscrition_listener> listeners = new ArrayList<>();
 	
 	//TERMINAR
 	//callback -> investigar isso!!!!
 	@Override
-	public void notificar() throws RemoteException {
-		// TODO Auto-generated method stub
+	public void subscribe_news(Subscrition_listener sl) throws RemoteException {
+		listeners.add(sl);
 		
 	}
 
