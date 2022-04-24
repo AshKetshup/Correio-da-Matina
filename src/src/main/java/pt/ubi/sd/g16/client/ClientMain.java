@@ -32,7 +32,13 @@ public class ClientMain extends java.rmi.server.UnicastRemoteObject implements C
         char[] content = new char[180];
         content = "Pato Voador encontrado na UBI!".toCharArray();
         News n = new News("Pato voador!",content,"tech",p);
+        News a = new News("Vaca voadora!",content,"tech",p);
+        News b = new News("Gato voador!",content,"tech",p);
+        News c = new News("Porco voador!",content,"tech",p);
         si.addNews(n);
+        si.addNews(a);
+        si.addNews(b);
+        si.addNews(c);
 
     }
 }

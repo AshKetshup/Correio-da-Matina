@@ -5,18 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e8256652-a054-4cdb-b362-9110743e1e06" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/server/ServerImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/backupServer/Server_backup/Servidor_backup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/backupServer/Server_backup/Servidor_backup.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/news/tech_2529159c-6598-4891-b754-9a013d46aa3c.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/news/tech_2e1994af-a639-4b73-8dbf-5c05830c221e.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/news/tech_439492e2-5aec-436a-80a5-0a77f184d825.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/news/tech_5ca4bb34-220b-4266-8467-14c85c9c45a4.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/news/tech_6c548a9a-676f-446e-a17c-b245c8747f2c.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/news/tech_6d4723e8-c20f-488f-8c04-f62ae188221d.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/news/tech_70239fe7-f853-430d-92e9-1c7549c8f8c5.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/news/tech_7803cd84-7f6a-406f-9689-a418f2ac9857.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/news/tech_79b35100-3cb5-4e1d-813c-4351d5fb4eca.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/news/tech_7a5bbab6-a48d-462d-87ce-86ae4af37840.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/news/tech_de52c6a6-c0b4-4cc2-a673-708711390d77.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/topics/tech.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/topics/tech.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/client/ClientMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/client/ClientMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/server/Server/Server_News.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/server/Server/Server_News_Impl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/server/Server/Server_News_Interface.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/server/ServerInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/server/ServerInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/server/ServerMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/server/ServerMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/Account.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/News.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/News.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/server/ServerImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/server/ServerImp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/Settings.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/Settings.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/Topic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/Topic.java" afterDir="false" />
     </list>
@@ -119,8 +124,25 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="pt.ubi.sd.g16.server.ServerMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="13" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="MAIN_CLASS_NAME" value="pt.ubi.sd.g16.server.ServerMain" />
+      <module name="Correio_da_Matina.main" />
+      <option name="VM_PARAMETERS" value="-Djava.security.policy=rmi.policy" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pt.ubi.sd.g16.server.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.pt.ubi.sd.g16.server.ServerMain" />
         <item itemvalue="Application.ServerMain" />
       </list>
     </recent_temporary>
@@ -157,34 +179,35 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/server/ServerImp.java</url>
-          <line>263</line>
+          <line>254</line>
           <option name="timeStamp" value="21" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/server/ServerImp.java</url>
+          <line>223</line>
+          <option name="timeStamp" value="35" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/client/ClientMain.java</url>
-          <line>34</line>
-          <option name="timeStamp" value="23" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/server/ServerImp.java</url>
-          <line>216</line>
-          <option name="timeStamp" value="25" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/server/ServerImp.java</url>
-          <line>233</line>
-          <option name="timeStamp" value="27" />
+          <line>40</line>
+          <option name="timeStamp" value="38" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/server/ServerImp.java</url>
-          <line>227</line>
+          <line>218</line>
           <properties class="pt.ubi.sd.g16.server.ServerImp" method="addNews">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
-          <option name="timeStamp" value="28" />
+          <option name="timeStamp" value="33" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="pt.ubi.sd.g16.server.ServerImp" memberName="topics_list" />
+        <PinnedItemInfo parentTag="java.util.UUID" memberName="mostSigBits" />
+      </pinned-members>
+    </pin-to-top-manager>
   </component>
 </project>

@@ -30,7 +30,6 @@ public class Topic implements Serializable {
         this.id = x.getId();
         this.title = x.getTitle();
         this.description = x.getDescription();
-        this.newsIDList.addAll(x.getNewsIDList());
         this.newsIDStock.addAll(x.getNewsIDStock());
 
         TOPIC_HASH_MAP.put(id, this);
@@ -74,7 +73,6 @@ public class Topic implements Serializable {
     }
 
     public void addNews(News news) {
-        newsIDList.add(news.getId());
         newsIDStock.add(news.getId());
     }
 
@@ -88,7 +86,6 @@ public class Topic implements Serializable {
     }
 
     public void addNews(UUID newsID) {
-        newsIDList.add(newsID);
         newsIDStock.add(newsID);
     }
 

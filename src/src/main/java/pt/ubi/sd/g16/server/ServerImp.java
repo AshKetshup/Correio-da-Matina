@@ -21,8 +21,6 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 	private static final String pathData = System.getProperty("user.dir") + File.separator + "data";
 	private static final String pathNews = pathData + File.separator + "news";
 	private static final String pathTopics = pathData + File.separator + "topics";
-	int topics_size; // Quantidade de tópicos
-	int news_size; // Quantidade de notícias
 
 	public ServerImp() throws IOException {
 		super();
@@ -48,8 +46,6 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 			if (!f.isFile()) {  // Caso o ficheiro de configurações não exista
 				FileWriter fout;
 				fout = new FileWriter(f);
-				config.setNews_size(0);
-				config.setTopics_size(0);
 				config.setLimit_topics(16);
 				fout.write(config.serialize()); // Cria um objecto Settings com as configurações pretendidas,
 				fout.flush();                    // transforma-o numa string Gson e escreve para um ficheiro.
@@ -69,15 +65,11 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 			System.out.println(e.getMessage());
 		}
 		limit_topic = config.getLimit_topics(); // Actualiza os valores das configs.
-		news_size = config.getNews_size();
-		topics_size = config.getTopics_size();
 	}
 
 	public void updateConfig() throws IOException {
 		File f = new File(pathConfig);
 		Settings config = new Settings(); // Iniciar objecto configurações configurações
-		config.setNews_size(news_size);
-		config.setTopics_size(topics_size);
 		config.setLimit_topics(limit_topic);
 		try {
 			FileWriter fout;
@@ -92,7 +84,7 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 
 	public void delNewsFile(News n) { // Apaga ficheiro da notícia
 		File dir = new File(pathNews);
-		File f = new File(dir, n.getTopic().getId() + "_" + n.getId() + ".json");
+		File f = new File(dir, n.getId() + ".json");
 		try {
 			f.delete();
 		} catch (Exception e) {
@@ -118,7 +110,7 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 
 	public void updateNews(News n) throws IOException {
 		File dir = new File(pathNews);
-		String filenameNews = n.getTopic().getId() + "_" + n.getId() + ".json"; // Escrita da News para um ficheiro
+		String filenameNews = n.getId() + ".json"; // Escrita da News para um ficheiro
 		File f = new File(dir, filenameNews);
 		FileWriter fout;
 		fout = new FileWriter(f);
@@ -214,7 +206,6 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 	public void addTopic(String id_topic, String title_topic, String desc_topic) throws IOException {  // P1, recebe id, título e descrição para criar um tópico novo.
 		Topic new_t = new Topic(id_topic, title_topic, desc_topic); // Cria um objecto do tipo tópico
 		topics_list.add(new_t); // Adiciona à lista de tópicos
-		topics_size += 1;
 		updateConfig(); // Actualiza o ficheiro de configuração
 
 		updateTopic(new_t);
@@ -228,21 +219,22 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 	public void addNews(News n) throws IOException { // P3, adiciona uma notícia ao servidor
 		String id_topico = n.getTopic().getId(); // Obtem o id do tópico da notícia
 		news_list.add(n); // Adiciona a notícia à lista de notícias
-		news_size += 1;
 		UUID news_id;
 		News aux = null;
 		updateNews(n); // Actualiza o ficheiro notícia
+		Topic taux = null;
 
-		for (int i = 0; i < topics_size; i++) {  // Actualiza o tópico da notícia e a lista de tópicos
+		for (int i = 0; i < topics_list.size() ; i++) {  // Actualiza o tópico da notícia e a lista de tópicos
 			if (Objects.equals(topics_list.get(i).getId(), id_topico)) {
-				topics_list.get(i).addNews(n);
+				taux = topics_list.get(i);
+				taux.addNews(n);
 
 				if (topics_list.get(i).getNewsIDStock().size() > limit_topic) { // Verifica se a quantidade de notícias ultrapassa o limite
 					int tam = topics_list.get(i).getNewsIDStock().size();
 					int count = 0;
 					while (count < tam / 2) {
 						news_id = topics_list.get(i).getNewsIDStock().get((0));
-						for (int j = 0; j < news_size; j++) {
+						for (int j = 0; j < news_list.size(); j++) {
 							if (news_list.get(j).getId() == news_id) {
 								aux = news_list.get(j);
 								break;
@@ -251,17 +243,16 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 						if (aux != null) {
 							backupNews(aux); // Envia para servidor backUp
 							System.out.println("A remover: " + topics_list.get(i).getNewsIDStock().get((0)));
-							topics_list.get(i).delNewsStock(topics_list.get(i).getNewsIDStock().get((0))); // Remove a metade mais recente
-							updateTopic(topics_list.get(i)); // Actualiza o ficheiro de tópicos
-							count += 1;
+							taux.delNewsStock(taux.getNewsIDStock().get((0))); // Remove a metade mais recente
+							updateTopic(taux); // Actualiza o ficheiro de tópicos
 						}
+						count += 1;
 					}
-
-					break;
 				}
+				break;
 			}
 		}
-		updateTopic(n.getTopic()); // Actualiza o ficheiro de tópicos
+		updateTopic(taux); // Actualiza o ficheiro de tópicos
 		updateConfig(); // Actualiza ficheiro de configuração
 	}
 
