@@ -20,6 +20,7 @@ public class ServerMain extends java.rmi.server.UnicastRemoteObject implements S
         } catch (Exception e) {
             System.out.println("Exception starting RMI registry:");
         }
+
         try {
             // instanciar objeto remoto
             ServerMain sv = new ServerMain();
