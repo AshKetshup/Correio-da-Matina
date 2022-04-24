@@ -76,14 +76,7 @@ public class Topic implements Serializable {
         newsIDStock.add(news.getId());
     }
 
-    public void delNewsStock(UUID newsID){
-        for (int i = 0; i < newsIDStock.size(); i++) {
-            if(newsIDStock.get(i) == newsID) {
-                newsIDStock.remove(i);
-                break;
-            }
-        }
-    }
+    public boolean delNewsStock(UUID newsID){ return newsIDList.remove(newsID);}
 
     public void addNews(UUID newsID) {
         newsIDStock.add(newsID);

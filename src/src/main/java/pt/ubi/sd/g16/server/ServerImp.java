@@ -3,14 +3,16 @@ package pt.ubi.sd.g16.server;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
 
-import pt.ubi.sd.g16.shared.News;
-import pt.ubi.sd.g16.shared.Settings;
-import pt.ubi.sd.g16.shared.Topic;
+import pt.ubi.sd.g16.shared.*;
 
 public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 	private ArrayList<News> news_list; // ArrayList com todas as notícias
@@ -21,6 +23,7 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 	private static final String pathData = System.getProperty("user.dir") + File.separator + "data";
 	private static final String pathNews = pathData + File.separator + "news";
 	private static final String pathTopics = pathData + File.separator + "topics";
+	private static final String pathUsers = pathData + File.separator + "users";
 
 	public ServerImp() throws IOException {
 		super();
@@ -35,6 +38,7 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 
 		Files.createDirectories((Paths.get(pathNews))); // Cria pasta data/news
 		Files.createDirectories((Paths.get(pathTopics))); // Cria pasta data/topics
+		Files.createDirectories((Paths.get(pathUsers))); // Cria pasta para utilizadores
 	}
 
 //---------------- Operações de I/O:   ----------------
@@ -275,24 +279,128 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 	}
 
 //------------------- BACKUP -------------------
+*/
+//-------------- LOGIN -----------------------
 
+public void saveAccount(Account a) throws IOException {
+	File dir = new File(pathUsers);
+	String filenameUser = a.getUsername() + ".json"; // Escrita do User para um ficheiro
+	File f = new File(dir, filenameUser);
+	FileWriter fout;
+	fout = new FileWriter(f);
+	fout.write(a.serialize()); // transforma-o numa string Gson e escreve para um ficheiro.
+	fout.flush();
+	fout.close();
+}
 
-	//-------------- LOGIN -----------------------
+public Account readAccount(String filename){
+	File dir = new File(pathUsers); // Pasta
+	File f = new File(dir, filename); // Nome do ficheiro
+	Account a = null;
+	try (FileReader fr = new FileReader(f)) { // Lê uma string Gson e transfere o seu conteúdo para variáveis
+		char[] chars = new char[(int) f.length()];
+		fr.read(chars);
+		String GsonLine = new String(chars);
+		a = new Account(GsonLine);  // Cria novo tópico com os conteúdos lidos
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+	return a;
+}
+public ArrayList<Login> open_login_file(){
+	ArrayList<Login> dados = new ArrayList<Login>();
 
-	public ArrayList<login> abrir_login() {
-		return null;
+	File t = new File("login.txt");
+
+	try {
+		FileInputStream fis = new FileInputStream(t);
+		ObjectInputStream oIs = new ObjectInputStream(fis);
+
+		//colocar topicos ja disponiveis no list
+		//colocar noticas no ArrayList para serem manipuladas
+		while(oIs.read()!=(-1)){
+			dados.add((Login)oIs.readObject());
+		}
+
+		oIs.close();
+	}catch(IOException | ClassNotFoundException e) {
+		System.out.println(e.getMessage());
+	}
+	return dados;
+}
+	//after
+	public void update_login_file(Login l) {
+
+		File f = new File("login.txt");
+
+		try {
+			FileOutputStream fos = new FileOutputStream(f);
+			ObjectOutputStream oOs = new ObjectOutputStream(fos);
+
+			oOs.writeObject(l);
+
+			oOs.close();
+
+		}catch(IOException e){
+			System.out.println(e.getMessage());
+		}
 	}
 
-
-	@Override
 	public boolean user_login(String username, String password) throws RemoteException {
+		ArrayList<Login> users = open_login_file();
 
+		for(int i=0; i<users.size(); i++) {
+
+			//verifies if username is in file
+			if(users.get(i).getUsername().equals(username)) {
+
+				//compares the secure_pwd stored in file with the secure password created using the pwd and the salt that was used to secure the original password
+				if(users.get(i).getSecuredPassword().equals(SecurePassword(password, users.get(i).getSalt()))){
+
+					System.out.println("Login was successful\n");
+					return true;
+					//login successful
+				}else {
+					System.out.println("Incorrect password\n");
+					return false;
+				}
+			}else {
+				System.out.println("Incorrect username\n");
+				return false;
+			}
+		}
 		return false;
 	}
 
-	@Override
-	public void registar_user(String username, String password, String confirm_pwd) throws RemoteException {
-		// TODO Auto-generated method stub
+	private static String SecurePassword(String password, byte[] salt){
+		String generatedPassord = null;
+		try{
+			MessageDigest msgDigest = MessageDigest.getInstance("SHA-256");
+			msgDigest.update(salt);
+			byte[] bytes = msgDigest.digest(password.getBytes());
 
-	}*/
+			StringBuilder sb = new StringBuilder();
+			for (byte aByte : bytes) {
+				sb.append(Integer.toString((aByte & 0xff) + 0x100, 16).substring(1));
+			}
+			generatedPassord = sb.toString();
+		}catch(NoSuchAlgorithmException e){
+			e.printStackTrace();
+		}
+		return generatedPassord;
+	}
+	public void register_user(String username, String password, String confirm_pwd) throws RemoteException {
+		try {
+			if(password.equals(confirm_pwd)) {
+				Login l = new Login(username, password);
+				update_login_file(l);
+				System.out.println("Resgistration successful\n");
+				user_login(username, password);
+			}else {
+				System.out.println("Resgistration unsuccessful\n");
+			}
+		}catch(NoSuchProviderException | NoSuchAlgorithmException e) {
+			System.out.println(e.getMessage());
+		}
+	}
 }
