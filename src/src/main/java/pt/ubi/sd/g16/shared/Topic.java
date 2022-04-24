@@ -14,9 +14,17 @@ public class Topic implements Serializable {
     private String title;
     private String description;
     private final ArrayList<UUID> newsIDList = new ArrayList<>();
-    private final ArrayList<UUID> newsIDStock = new ArrayList<>();
 
-    public Topic(String id, String title, String description) {
+    public static class TopicIDTakenException extends Exception {
+        public TopicIDTakenException() {
+            super("This TopicID is already taken.");
+        }
+    }
+
+    public Topic(String id, String title, String description) throws TopicIDTakenException {
+        if (Topic.isIDUsed(id))
+			throw new TopicIDTakenException();
+
         this.id = id;
         this.title = title;
         this.description = description;
@@ -28,8 +36,7 @@ public class Topic implements Serializable {
         this.id = x.getId();
         this.title = x.getTitle();
         this.description = x.getDescription();
-        this.newsIDList.addAll(x.getNewsIDList());
-        this.newsIDStock.addAll(x.getNewsIDStock());
+        this.newsIDList.addAll(x.getNewsIDStock());
     }
 
     public static Topic getTopicFromID(String topicID) throws NullPointerException {
@@ -53,12 +60,8 @@ public class Topic implements Serializable {
         return description;
     }
 
-    public ArrayList<UUID> getNewsIDList() {
-        return newsIDList;
-    }
-
     public ArrayList<UUID> getNewsIDStock() {
-        return newsIDStock;
+        return newsIDList;
     }
 
     public void setTitle(String title) {
@@ -76,6 +79,14 @@ public class Topic implements Serializable {
     public void addNews(UUID newsID) {
         newsIDList.add(newsID);
     }
+
+    public boolean deleteNewsID(UUID newsID) {
+		return newsIDList.remove(newsID);
+	}
+
+    private static boolean isIDUsed(String username) {
+		return TOPIC_HASH_MAP.containsKey(username);
+	}
 
     public String serialize() {
         return new Gson().toJson(this);

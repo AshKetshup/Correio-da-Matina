@@ -20,6 +20,7 @@ public class Account implements Serializable {
     private final byte[] salt;
     private final String saltedPassword;
     private final ArrayList<UUID> newsIDList = new ArrayList<>();
+    private final ArrayList<String> topicIDList = new ArrayList<>();
 
     public static class PasswordNotMatchingException extends Exception {
         public PasswordNotMatchingException() {
@@ -61,6 +62,10 @@ public class Account implements Serializable {
 		Account.ACCOUNT_HASH_MAP.put(this.username, this);
     }
 
+	public static HashMap<String, Account> getAccountHashMap() {
+		return ACCOUNT_HASH_MAP;
+	}
+
 	public String getUsername() {
 		return username;
 	}
@@ -84,6 +89,10 @@ public class Account implements Serializable {
 	public String serialize() {
         return new Gson().toJson(this);
     }
+
+	public boolean deleteNewsID(UUID newsID) {
+		return newsIDList.remove(newsID);
+	}
 
 	private static boolean isUsernameUsed(String username) {
 		return ACCOUNT_HASH_MAP.containsKey(username);
