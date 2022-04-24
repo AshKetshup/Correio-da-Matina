@@ -83,4 +83,8 @@ public class News implements Serializable {
 	public String toString() {
 		return title + "\t" + topic.getTitle() + "\t" + publisher.getUsername() + "\t" + getNewsDate() + "\n";
 	}
+
+	public String serialize() {
+		return new Gson().toJson(this);
+	}
 }

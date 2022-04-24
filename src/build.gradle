@@ -6,6 +6,10 @@ group 'pt.ubi.sd.g16'
 version '1.0-SNAPSHOT'
 
 repositories {
+    flatDir {
+        dirs 'libs'
+    }
+
     mavenCentral()
 }
 
