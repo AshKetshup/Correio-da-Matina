@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="d011f1ad-da4d-4dfb-b840-ab074c75ac01" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Proj1/.classpath" beforeDir="false" afterPath="$PROJECT_DIR$/Proj1/.classpath" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Proj1/.project" beforeDir="false" afterPath="$PROJECT_DIR$/Proj1/.project" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Proj1/.settings/org.eclipse.jdt.core.prefs" beforeDir="false" afterPath="$PROJECT_DIR$/Proj1/.settings/org.eclipse.jdt.core.prefs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Proj1/src/Server/Noticia.java" beforeDir="false" afterPath="$PROJECT_DIR$/Proj1/src/Server/Noticia.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Proj1/src/Server/Servidor_noticias.java" beforeDir="false" afterPath="$PROJECT_DIR$/Proj1/src/Server/Servidor_noticias.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Proj1/src/Server/Servidor_noticias_impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/Proj1/src/Server/Servidor_noticias_impl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Proj1/src/Server/Servidor_noticias_interface.java" beforeDir="false" afterPath="$PROJECT_DIR$/Proj1/src/Server/Servidor_noticias_interface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Proj1/src/Server/Topico.java" beforeDir="false" afterPath="$PROJECT_DIR$/Proj1/src/Server/Topico.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Proj1/src/Server/login.java" beforeDir="false" afterPath="$PROJECT_DIR$/Proj1/src/Server/login.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Proj1/src/Server_backup/Servidor_backup.java" beforeDir="false" afterPath="$PROJECT_DIR$/Proj1/src/Server_backup/Servidor_backup.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rmi.policy" beforeDir="false" afterPath="$PROJECT_DIR$/rmi.policy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/.gradle/buildOutputCleanup/cache.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/src/.idea/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/.idea/jarRepositories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/.idea/libraries/Gradle__org_apiguardian_apiguardian_api_1_1_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/.idea/libraries/Gradle__org_apiguardian_apiguardian_api_1_1_2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/.idea/libraries/Gradle__org_junit_jupiter_junit_jupiter_api_5_8_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/.idea/libraries/Gradle__org_junit_jupiter_junit_jupiter_api_5_8_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/.idea/libraries/Gradle__org_junit_jupiter_junit_jupiter_engine_5_8_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/.idea/libraries/Gradle__org_junit_jupiter_junit_jupiter_engine_5_8_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/.idea/libraries/Gradle__org_junit_platform_junit_platform_commons_1_8_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/.idea/libraries/Gradle__org_junit_platform_junit_platform_commons_1_8_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/.idea/libraries/Gradle__org_junit_platform_junit_platform_engine_1_8_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/.idea/libraries/Gradle__org_junit_platform_junit_platform_engine_1_8_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/.idea/libraries/Gradle__org_opentest4j_opentest4j_1_2_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/.idea/libraries/Gradle__org_opentest4j_opentest4j_1_2_0.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/.idea/modules/Correio_da_Matina.test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/src/.idea/modules/Correio_da_Matina.test.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/src/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/src/gradlew" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gradlew.bat" beforeDir="false" afterPath="$PROJECT_DIR$/src/gradlew.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/src/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/main/java/pt/ubi/sd/g16/backupServer/BackupServerMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/src/main/java/pt/ubi/sd/g16/backupServer/BackupServerMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/main/java/pt/ubi/sd/g16/backupServer/Server_backup/Servidor_backup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/src/main/java/pt/ubi/sd/g16/backupServer/Server_backup/Servidor_backup.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/main/java/pt/ubi/sd/g16/client/ClientInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/src/main/java/pt/ubi/sd/g16/client/ClientInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/main/java/pt/ubi/sd/g16/client/ClientMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/src/main/java/pt/ubi/sd/g16/client/ClientMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/main/java/pt/ubi/sd/g16/server/Server/Server_News.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/src/main/java/pt/ubi/sd/g16/server/Server/Server_News.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/main/java/pt/ubi/sd/g16/server/Server/Server_News_Impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/src/main/java/pt/ubi/sd/g16/server/Server/Server_News_Impl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/main/java/pt/ubi/sd/g16/server/Server/Server_News_Interface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/src/main/java/pt/ubi/sd/g16/server/Server/Server_News_Interface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/main/java/pt/ubi/sd/g16/server/Server/Servidor_noticias.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/src/main/java/pt/ubi/sd/g16/server/Server/Servidor_noticias.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/main/java/pt/ubi/sd/g16/server/Server/Servidor_noticias_impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/src/main/java/pt/ubi/sd/g16/server/Server/Servidor_noticias_impl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/main/java/pt/ubi/sd/g16/server/Server/Servidor_noticias_interface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/src/main/java/pt/ubi/sd/g16/server/Server/Servidor_noticias_interface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/main/java/pt/ubi/sd/g16/server/ServerInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/src/main/java/pt/ubi/sd/g16/server/ServerInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/main/java/pt/ubi/sd/g16/server/ServerMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/src/main/java/pt/ubi/sd/g16/server/ServerMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/main/java/pt/ubi/sd/g16/shared/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/src/main/java/pt/ubi/sd/g16/shared/Account.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/main/java/pt/ubi/sd/g16/shared/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/src/main/java/pt/ubi/sd/g16/shared/Login.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/main/java/pt/ubi/sd/g16/shared/News.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/src/main/java/pt/ubi/sd/g16/shared/News.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/main/java/pt/ubi/sd/g16/shared/Publisher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/src/main/java/pt/ubi/sd/g16/shared/Publisher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/main/java/pt/ubi/sd/g16/shared/Settings.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/src/main/java/pt/ubi/sd/g16/shared/Settings.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/main/java/pt/ubi/sd/g16/shared/Topic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/src/main/java/pt/ubi/sd/g16/shared/Topic.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="28FjUVjQdM7PWp1VwoTOFXaMT0K" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;last_opened_file_path&quot;: &quot;/home/farsen/Documentos/ProgramaçãoVerdadeira/Programação/Java/sd_projecto/Correio-da-Matina/src&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+  }
+}</component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
