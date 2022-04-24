@@ -1,12 +1,14 @@
 package pt.ubi.sd.g16.shared;
 
+import com.google.gson.Gson;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
 public class Topic implements Serializable {
-    private static final HashMap<String, Topic> topicHashMap = new HashMap<>();
+    private static final HashMap<String, Topic> TOPIC_HASH_MAP = new HashMap<>();
 
     private final String id;
     private String title;
@@ -20,8 +22,18 @@ public class Topic implements Serializable {
         this.description = description;
     }
 
+    public Topic(String jsonLine) {
+        Topic x = new Gson().fromJson(jsonLine, Topic.class);
+
+        this.id = x.getId();
+        this.title = x.getTitle();
+        this.description = x.getDescription();
+        this.newsIDList.addAll(x.getNewsIDList());
+        this.newsIDStock.addAll(x.getNewsIDStock());
+    }
+
     public static Topic getTopicFromID(String topicID) throws NullPointerException {
-        Topic x = topicHashMap.get(topicID);
+        Topic x = TOPIC_HASH_MAP.get(topicID);
 
         if (x == null)
             throw new NullPointerException();
@@ -44,7 +56,7 @@ public class Topic implements Serializable {
     public ArrayList<UUID> getNewsIDList() {
         return newsIDList;
     }
-    
+
     public ArrayList<UUID> getNewsIDStock() {
         return newsIDStock;
     }
@@ -63,5 +75,9 @@ public class Topic implements Serializable {
 
     public void addNews(UUID newsID) {
         newsIDList.add(newsID);
+    }
+
+    public String serialize() {
+        return new Gson().toJson(this);
     }
 }

@@ -12,9 +12,9 @@ public class News implements Serializable {
 	private final UUID id;
 	private String title;
     private char[] content = new char[180];	// Conteudo
-	private Topic topic;        		// Topico TODO
+	private Topic topic;        			// Topico TODO
 	private Publisher publisher;	    	// Publisher TODO
-	private Date date; 	   			// Data de criação
+	private Date date; 	   					// Data de criação
 	private final static String datePattern = "dd-mm-yyyy hh:mm:ss";
 
 	public News(String title, char[] content, String topicID, Publisher publisher) {
