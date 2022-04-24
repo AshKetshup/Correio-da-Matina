@@ -7,11 +7,12 @@ import java.util.UUID;
 
 public class Topic implements Serializable {
     private static final HashMap<String, Topic> topicHashMap = new HashMap<>();
-    private final ArrayList<UUID> newsIDList = new ArrayList<>();
 
     private final String id;
     private String title;
     private String description;
+    private final ArrayList<UUID> newsIDList = new ArrayList<>();
+    private final ArrayList<UUID> newsIDStock = new ArrayList<>();
 
     public Topic(String id, String title, String description) {
         this.id = id;
@@ -38,6 +39,14 @@ public class Topic implements Serializable {
 
     public String getDescription() {
         return description;
+    }
+
+    public ArrayList<UUID> getNewsIDList() {
+        return newsIDList;
+    }
+    
+    public ArrayList<UUID> getNewsIDStock() {
+        return newsIDStock;
     }
 
     public void setTitle(String title) {

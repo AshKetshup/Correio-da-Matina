@@ -53,7 +53,7 @@ public class Login implements Serializable {
 	    byte[] salt = new byte[16]; //size of byte array = 16
 
 	    //get a random salt
-	    secureRandom.nextBytes(salt); //
+	    secureRandom.nextBytes(salt);
 	    return salt;
 	}
 
