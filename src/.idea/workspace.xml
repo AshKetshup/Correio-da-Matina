@@ -5,12 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e8256652-a054-4cdb-b362-9110743e1e06" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/Account.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/News.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/News.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/Publisher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/Publisher.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/Topic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/Topic.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
