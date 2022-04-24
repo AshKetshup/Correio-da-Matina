@@ -8,25 +8,28 @@ import java.security.SecureRandom;
 
 public class login implements Serializable{
 	private String username;
-	private int prod_registado;
+	
+	//to verify if user is a publisher = 1 or a subscriber = 0
+	private int resgistered_publisher;
 	private String secure_password;
 	private byte[] salt;
 	
-	public login(String username, String pwd) throws NoSuchProviderException, NoSuchAlgorithmException {
+	public login(String username, String pwd, int resgistered_publisher) throws NoSuchProviderException, NoSuchAlgorithmException {
 		this.username = username;
 		
 		//generates the salt -> random array of bytes
 		this.salt = Secure_salt();
 		
-		this.secure_password = SecurePassword(pwd, salt);;
+		this.secure_password = SecurePassword(pwd, salt);
+		this.resgistered_publisher = resgistered_publisher;
 	}
 
-	public int getProd_registado() {
-		return prod_registado;
+	public int getResgistered_publisher() {
+		return resgistered_publisher;
 	}
 
-	public void setProd_registado(int prod_registado) {
-		this.prod_registado = prod_registado;
+	public void setResgistered_publisher(int resgistered_publisher) {
+		this.resgistered_publisher = resgistered_publisher;
 	}
 
 	

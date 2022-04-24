@@ -1,17 +1,24 @@
 package Server;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.util.ArrayList;
 
 public interface Servidor_noticias_interface extends java.rmi.Remote{
 	
-	//abrir_login_file
-	public ArrayList<login> abrir_login() throws java.rmi.RemoteException;
+	//open the file containing login info
+	public ArrayList<login> open_login_file() throws java.rmi.RemoteException;
+	
+	//update the file containing the login info
+	public void update_login_file(login l) throws java.rmi.RemoteException;
 	
 	//iniciar login
 	public boolean user_login(String username, String password) throws java.rmi.RemoteException;
 	
+	//public String compare_pwd(String password, byte[] salt) throws java.rmi.RemoteException;
+	
 	//registar 
-	public void registar_user(String username, String password, String confirm_pwd) throws java.rmi.RemoteException;
+	public void register_user(String username, String password, String confirm_pwd, int resgistered_publisher) throws java.rmi.RemoteException;
 	
 	
 	
