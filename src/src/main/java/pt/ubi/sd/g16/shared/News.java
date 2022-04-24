@@ -39,6 +39,17 @@ public class News implements Serializable {
 		setDateFromString(date);
 	}
 
+	public News(String jsonLine) {
+		News x = new Gson().fromJson(jsonLine, News.class);
+
+		this.id = x.getId();
+		this.title = x.getTitle();
+		this.content = x.getContent();
+		this.topic = x.getTopic();
+		this.publisher = x.getPublisher();
+		this.date = x.getDate();
+	}
+
 	public UUID getId() {
 		return id;
 	}
@@ -88,4 +99,5 @@ public class News implements Serializable {
 	public String serialize() {
 		return new Gson().toJson(this);
 	}
+
 }

@@ -44,5 +44,6 @@ public class Settings {
         Settings aux = new Gson().fromJson(GsonLine,Settings.class);
         this.limit_topics = aux.limit_topics;
         this.news_size = aux.news_size;
+        this.topics_size = aux.topics_size;
     }
 }

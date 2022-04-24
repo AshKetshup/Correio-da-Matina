@@ -20,6 +20,8 @@ public class Topic implements Serializable {
         this.id = id;
         this.title = title;
         this.description = description;
+
+        TOPIC_HASH_MAP.put(id, this);
     }
 
     public Topic(String jsonLine) {
@@ -30,6 +32,8 @@ public class Topic implements Serializable {
         this.description = x.getDescription();
         this.newsIDList.addAll(x.getNewsIDList());
         this.newsIDStock.addAll(x.getNewsIDStock());
+
+        TOPIC_HASH_MAP.put(id, this);
     }
 
     public static Topic getTopicFromID(String topicID) throws NullPointerException {
@@ -71,10 +75,21 @@ public class Topic implements Serializable {
 
     public void addNews(News news) {
         newsIDList.add(news.getId());
+        newsIDStock.add(news.getId());
+    }
+
+    public void delNewsStock(UUID newsID){
+        for (int i = 0; i < newsIDStock.size(); i++) {
+            if(newsIDStock.get(i) == newsID) {
+                newsIDStock.remove(i);
+                break;
+            }
+        }
     }
 
     public void addNews(UUID newsID) {
         newsIDList.add(newsID);
+        newsIDStock.add(newsID);
     }
 
     public String serialize() {

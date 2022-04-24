@@ -1,10 +1,11 @@
 package pt.ubi.sd.g16.server;
 
 import pt.ubi.sd.g16.client.ClientInterface;
-import org.json.simple.*;
+
+import java.io.IOException;
 import java.rmi.*;
 
-public class ServerMain extends java.rmi.server.UnicastRemoteObject implements ServerInterface {
+public class ServerMain extends java.rmi.server.UnicastRemoteObject {
     public static ClientInterface cliente; // <- Interface cliente
 
     public ServerMain() throws java.rmi.RemoteException {
@@ -23,7 +24,7 @@ public class ServerMain extends java.rmi.server.UnicastRemoteObject implements S
 
         try {
             // instanciar objeto remoto
-            ServerMain sv = new ServerMain();
+            ServerInterface sv = new ServerImp();
             // registar o objeto remoto no Registry
             Naming.rebind("CorreioDaMatina", sv);
             System.out.println("Remote object ready");
@@ -34,6 +35,8 @@ public class ServerMain extends java.rmi.server.UnicastRemoteObject implements S
             System.out.println("Exception in the server" + e.getMessage());
         } catch (java.net.MalformedURLException u) {
             System.out.println("Exception in the server - URL");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
