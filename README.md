@@ -8,17 +8,17 @@ Pretende-se criar um servidor de notícias que terá dois tipos de processos cli
 ---
 
 #### Os **produtores** de noticias registados deverão poder:
-- [ ] P1: Adicionar um tópico (por exemplo desporto, politica nacional, educação, ...);
-- [ ] P2: Consultar tópicos existentes;
-- [ ] P3: Inserir uma notícia de um dado tópico;
-- [ ] P4: Consultar todas as notícias publicadas.
+- [X] P1: Adicionar um tópico (por exemplo desporto, politica nacional, educação, ...);
+- [X] P2: Consultar tópicos existentes;
+- [X] P3: Inserir uma notícia de um dado tópico;
+- [X] P4: Consultar todas as notícias publicadas.
 
 ---
 
 #### Os **consumidores** de noticias registados deverão poder:
 - [ ] C1: Subscrever um tópico (a operação pode ser repetida tantas vezes quanto os tópicos disponiveis);
-- [ ] C2: Consultar notícias de um dado tópico entre um determinado intervalo de datas. Se para o intervalo pedido, as notícias já estiverem em arquivo, receberá o endereço (IP + porto) de um servidor de arquivo ao qual poderá solicitar as notícias em falta;
-- [ ] C3: Consultar a última notícia de um dado tópico;
+- [X] C2: Consultar notícias de um dado tópico entre um determinado intervalo de datas. Se para o intervalo pedido, as notícias já estiverem em arquivo, receberá o endereço (IP + porto) de um servidor de arquivo ao qual poderá solicitar as notícias em falta;
+- [X] C3: Consultar a última notícia de um dado tópico;
 
 ---
 
@@ -27,9 +27,9 @@ Poderão existir **consumidores de notícias não registados** que podem executa
 O **servidor de notícias** deverá ser um servidor RMI, com um, ou mais, objetos remotos que permitam responder às operações descritas.
 
 - [ ] Sempre que um produtor publicar uma notícia de um dado tópico, deve ser enviada uma **notificação** (callback) a todos os consumidores registados que subscreveram esse tópico (tratar situações em que o consumidor não está ligado).
-- [ ] O número de notícias para cada tópico deve ser limitado por um parâmetro dado num ficheiro 
+- [X] O número de notícias para cada tópico deve ser limitado por um parâmetro dado num ficheiro 
 de configuração (o limite é o mesmo, qualquer que seja o tópico).
-- [ ] As notícias devem ser guardadas em ficheiros de objetos. 
+- [X] As notícias devem ser guardadas em ficheiros de objetos. 
 - [ ] Quando o limite do número de notícias de um dado tópico é atingido, 50% das notícias desse tópico deverá ser copiado para um ficheiro de backup sendo eliminadas do ficheiro original. 
 
 Uma **notícia** está sempre associada a um tópico, associada a um produtor, tem um limite de 180 caracteres e tem um timestamp correspondente à data e hora em que é recebida pelo servidor. 

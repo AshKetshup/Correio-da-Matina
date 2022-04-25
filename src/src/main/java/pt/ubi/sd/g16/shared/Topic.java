@@ -14,6 +14,7 @@ public class Topic implements Serializable {
     private String title;
     private String description;
     private final ArrayList<UUID> newsIDList = new ArrayList<>();
+    private boolean archivedNews;
 
     public static class TopicIDTakenException extends Exception {
         public TopicIDTakenException() {
@@ -28,6 +29,9 @@ public class Topic implements Serializable {
         this.id = id;
         this.title = title;
         this.description = description;
+        this.archivedNews = false;
+
+        TOPIC_HASH_MAP.put(id, this);
     }
 
     public Topic(String jsonLine) {
@@ -37,6 +41,9 @@ public class Topic implements Serializable {
         this.title = x.getTitle();
         this.description = x.getDescription();
         this.newsIDList.addAll(x.getNewsIDStock());
+        this.archivedNews = x.isArchivedNews();
+
+        TOPIC_HASH_MAP.put(id, this);
     }
 
     public static Topic getTopicFromID(String topicID) throws NullPointerException {
@@ -64,6 +71,14 @@ public class Topic implements Serializable {
         return newsIDList;
     }
 
+    public boolean isArchivedNews() {
+        return archivedNews;
+    }
+
+    public void setArchivedNews(boolean archivedNews) {
+        this.archivedNews = archivedNews;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -73,11 +88,13 @@ public class Topic implements Serializable {
     }
 
     public void addNews(News news) {
-        newsIDList.add(news.getId());
+        newsIDStock.add(news.getId());
     }
 
+    public boolean delNewsStock(UUID newsID){ return newsIDList.remove(newsID);}
+
     public void addNews(UUID newsID) {
-        newsIDList.add(newsID);
+        newsIDStock.add(newsID);
     }
 
     public boolean deleteNewsID(UUID newsID) {

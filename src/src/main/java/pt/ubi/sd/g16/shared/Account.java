@@ -44,7 +44,7 @@ public class Account implements Serializable {
 
 		this.username = username;
 		this.rank = rank;
-        this.salt = secureSalt();
+        this.salt = getNextSalt();
 		this.saltedPassword = securePassword(password, salt);
 
 		Account.ACCOUNT_HASH_MAP.put(this.username, this);
@@ -98,6 +98,12 @@ public class Account implements Serializable {
 		return ACCOUNT_HASH_MAP.containsKey(username);
 	}
 
+	public static byte[] getNextSalt() {
+		byte[] salt = new byte[16];
+		new SecureRandom().nextBytes(salt);
+		return salt;
+	}
+
 	private static byte[] secureSalt() throws NoSuchProviderException, NoSuchAlgorithmException {
 	    //Always use SecureRandom generator
 	    SecureRandom secureRandom = SecureRandom.getInstance("MD5","SUN");
@@ -111,7 +117,7 @@ public class Account implements Serializable {
 	}
 
     private static String securePassword(String password, byte[] salt) throws NoSuchAlgorithmException {
-		MessageDigest msgDigest = MessageDigest.getInstance("SHA256");
+		MessageDigest msgDigest = MessageDigest.getInstance("SHA-256");
 		msgDigest.update(salt);
 		byte[] bytes = msgDigest.digest(password.getBytes());
 
