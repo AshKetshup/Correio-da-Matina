@@ -8,9 +8,11 @@ import java.rmi.server.UnicastRemoteObject;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
+import pt.ubi.sd.g16.server.exceptions.NotFoundOnServerException;
 
 import pt.ubi.sd.g16.shared.*;
 
@@ -24,6 +26,7 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 	private static final String pathNews = pathData + File.separator + "news";
 	private static final String pathTopics = pathData + File.separator + "topics";
 	private static final String pathUsers = pathData + File.separator + "users";
+	private static final String backupServerIP = "127.0.0.1:1200";
 
 	public ServerImp() throws IOException {
 		super();
@@ -98,10 +101,11 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 
 	public void backupNews(News n) { // Envia só para o servidor de backup
 		// Envia sv de backup
+
 		delNewsFile(n);
 	}
 
-	public void updateTopic(Topic t) throws IOException {
+	public void updateTopic(Topic t) throws IOException { // Guarda ficheiro topic na pasta topics
 		File dir = new File(pathTopics);
 		String filenameTopico = t.getId() + ".json"; // Escrita do tópico para um ficheiro
 		File ft = new File(dir, filenameTopico);
@@ -112,7 +116,7 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 		fout.close();
 	}
 
-	public void updateNews(News n) throws IOException {
+	public void updateNews(News n) throws IOException { // Guarda ficheiro news na pasta news
 		File dir = new File(pathNews);
 		String filenameNews = n.getId() + ".json"; // Escrita da News para um ficheiro
 		File f = new File(dir, filenameNews);
@@ -123,7 +127,7 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 		fout.close();
 	}
 
-	public News readNews(String filename) {
+	public News readNews(String filename) { // Lê ficheiro news da pasta news e transforma em objecto
 		File dir = new File(pathNews); // Pasta
 		File f = new File(dir, filename); // Nome do ficheiro
 		News n = null;
@@ -138,7 +142,7 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 		return n;
 	}
 
-	public Topic readTopic(String filename) {
+	public Topic readTopic(String filename) { // Lê ficheiro topic da pasta news e transforma em objecto
 		File dir = new File(pathTopics); // Pasta
 		File f = new File(dir, filename); // Nome do ficheiro
 		Topic t = null;
@@ -153,7 +157,7 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 		return t;
 	}
 
-	public boolean loadTopic() {                // Carrega as notícias para o arrayList
+	public boolean loadTopic() {                // Carrega todos os ficheiros topic para o arrayList
 		topics_list = new ArrayList<Topic>();
 		File folder = new File(pathTopics);
 		File[] listOfFiles = folder.listFiles();
@@ -177,7 +181,7 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 		return true;
 	}
 
-	public boolean loadNews() {                // Carrega as notícias para o arrayList
+	public boolean loadNews() {                // Carrega todos os ficheiros notícias para o arrayList
 		news_list = new ArrayList<News>();
 		File folder = new File(pathNews);
 		File[] listOfFiles = folder.listFiles();
@@ -201,10 +205,6 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 		return true;
 	}
 
-	public void loadTopics() {
-
-	}
-
 //---------------- PUBLISHER ----------------
 
 	public void addTopic(String id_topic, String title_topic, String desc_topic) throws IOException {  // P1, recebe id, título e descrição para criar um tópico novo.
@@ -218,7 +218,7 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 
 	public ArrayList<Topic> getTopics() { // P2, devolve a arrayList com os tópicos
 		return topics_list;
-	}
+	} // P2, devolve lista tópicos
 
 	public void addNews(News n) throws IOException { // P3, adiciona uma notícia ao servidor
 		String id_topico = n.getTopic().getId(); // Obtem o id do tópico da notícia
@@ -266,23 +266,46 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 
 //---------------- SUBSCRIBER ----------------
 
-
-//----------- NOTIFICAÇÃO DE PUBLICAÇÃO DE NOTICIA A PESSOAS SUBSCRITAS A UM CERTO TÓPICO
-
-/*
-	//TERMINAR
-	//callback -> investigar isso!!!!
-	@Override
-	public void notificar() throws RemoteException {
-		// TODO Auto-generated method stub
-
+public ArrayList<News> getNewsInsideTimeInterval(String idTopic, Date startDate, Date finalDate) throws NotFoundOnServerException { // C2, procura notícias entre o intervalo de tempo
+	ArrayList<UUID> ln = new ArrayList<>();
+	ArrayList<News> toSend = new ArrayList<>();
+	for(Topic t : topics_list) {
+		if (t.getId().equals(idTopic)) {
+			ln = t.getNewsIDStock(); // Salva os ID's de todas as notícias do tópico pretendido em ln
+			break;
+		}
 	}
+	for(UUID nID : ln){
+		for(News nList : news_list ){ // Verifica se as notícias do tópico pretendido estão entre as duas datas
+			if(nList.getId() == nID && ( nList.getDate().after(startDate)  && nList.getDate().before(finalDate) )){
+				toSend.add(nList);
+			}
+		}
+	}
+	if(toSend.isEmpty()){ // Caso estejam vazias levanta um exceção
+		throw new NotFoundOnServerException();
+	}
+	return toSend; // Retorna ArrayList com todas as notícias satisfatórias ao pedido.
+}
 
-//------------------- BACKUP -------------------
-*/
-//-------------- LOGIN -----------------------
+public String getBackupIP(){ // Retorna o endereço ip do servidor de backup
+	return backupServerIP;
+}
+public News getLastNewsTopic(String idTopic){ // C3, envia a notícia mais recente de x tópico
+		UUID ln = null;
+	for(Topic t : topics_list){
+		if (Objects.equals(t.getId(), idTopic)) {
+			ln = t.getNewsIDStock().get(t.getNewsIDStock().size() - 1);
+			break;
+		}
+	}
+	if (ln != null)
+		return readNews(ln + ".json");
+	return null;
+}
+//-------------- LOGIN I/O-----------------------
 
-public void saveAccount(Account a) throws IOException {
+public void saveAccount(Account a) throws IOException { // Guarda objecto account em ficheiro, na pasta users
 	File dir = new File(pathUsers);
 	String filenameUser = a.getUsername() + ".json"; // Escrita do User para um ficheiro
 	File f = new File(dir, filenameUser);
@@ -293,7 +316,7 @@ public void saveAccount(Account a) throws IOException {
 	fout.close();
 }
 
-public Account readAccount(String filename){
+public Account readAccount(String filename){ // Transforma ficheiro account em objecto account
 	File dir = new File(pathUsers); // Pasta
 	File f = new File(dir, filename); // Nome do ficheiro
 	Account a = null;
@@ -307,6 +330,9 @@ public Account readAccount(String filename){
 	}
 	return a;
 }
+
+//-------------- LOGIN -----------------------
+
 public ArrayList<Login> open_login_file(){
 	ArrayList<Login> dados = new ArrayList<Login>();
 

@@ -15,11 +15,13 @@ public class Topic implements Serializable {
     private String description;
     private final ArrayList<UUID> newsIDList = new ArrayList<>();
     private final ArrayList<UUID> newsIDStock = new ArrayList<>();
+    private boolean archivedNews;
 
     public Topic(String id, String title, String description) {
         this.id = id;
         this.title = title;
         this.description = description;
+        this.archivedNews = false;
 
         TOPIC_HASH_MAP.put(id, this);
     }
@@ -31,6 +33,7 @@ public class Topic implements Serializable {
         this.title = x.getTitle();
         this.description = x.getDescription();
         this.newsIDStock.addAll(x.getNewsIDStock());
+        this.archivedNews = x.isArchivedNews();
 
         TOPIC_HASH_MAP.put(id, this);
     }
@@ -62,6 +65,14 @@ public class Topic implements Serializable {
 
     public ArrayList<UUID> getNewsIDStock() {
         return newsIDStock;
+    }
+
+    public boolean isArchivedNews() {
+        return archivedNews;
+    }
+
+    public void setArchivedNews(boolean archivedNews) {
+        this.archivedNews = archivedNews;
     }
 
     public void setTitle(String title) {
