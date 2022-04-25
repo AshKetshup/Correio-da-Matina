@@ -15,7 +15,7 @@ public class ClientMain extends java.rmi.server.UnicastRemoteObject implements C
     public ClientMain() throws RemoteException{
         super();
     }
-    public static void main(String[] args) throws IOException, NoSuchAlgorithmException, Account.UsernameTakenException, NoSuchProviderException, Account.PasswordNotMatchingException {
+    public static void main(String[] args) throws IOException, NoSuchAlgorithmException, Account.UsernameTakenException, NoSuchProviderException, Account.PasswordNotMatchingException, Topic.TopicIDTakenException {
         ServerInterface si = null;
         System.setSecurityManager(new SecurityManager());
         try {

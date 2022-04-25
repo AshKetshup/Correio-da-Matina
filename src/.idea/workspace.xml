@@ -5,8 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e8256652-a054-4cdb-b362-9110743e1e06" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/news/6eb48a4e-631d-41ba-b596-b231120f17f3.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/news/9d5fcd91-e188-4efc-9ca7-bf199321e993.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/topics/tech.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/client/ClientMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/client/ClientMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/server/ServerImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/server/ServerImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/server/ServerInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/server/ServerInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/Account.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/News.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/News.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/Subscriber.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/Subscriber.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -140,7 +151,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/Account.java</url>
-          <line>99</line>
+          <line>118</line>
           <option name="timeStamp" value="11" />
         </line-breakpoint>
       </breakpoints>

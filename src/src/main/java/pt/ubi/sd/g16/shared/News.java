@@ -49,17 +49,6 @@ public class News implements Serializable {
 		NEWS_HASH_MAP.put(this.id, this);
 	}
 
-	public News(String jsonLine) {
-		News x = new Gson().fromJson(jsonLine, News.class);
-
-		this.id = x.getId();
-		this.title = x.getTitle();
-		this.content = x.getContent();
-		this.topic = x.getTopic();
-		this.publisher = x.getPublisher();
-		this.date = x.getDate();
-	}
-
 	public UUID getId() {
 		return id;
 	}

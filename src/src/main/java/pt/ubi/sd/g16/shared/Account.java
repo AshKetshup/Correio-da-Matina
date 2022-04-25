@@ -21,8 +21,9 @@ public class Account implements Serializable {
     private final String saltedPassword;
     private final ArrayList<UUID> newsIDList = new ArrayList<>();
     private final ArrayList<String> topicIDList = new ArrayList<>();
+	private final ArrayList<String> notificationsList = new ArrayList<>();
 
-    public static class PasswordNotMatchingException extends Exception {
+	public static class PasswordNotMatchingException extends Exception {
         public PasswordNotMatchingException() {
             super("Password and Confirmation Password do not match.");
         }
@@ -58,6 +59,8 @@ public class Account implements Serializable {
 		this.salt = x.salt;
 		this.saltedPassword = x.saltedPassword;
 		this.newsIDList.addAll(x.newsIDList);
+		this.topicIDList.addAll(x.topicIDList);
+		this.notificationsList.addAll(x.notificationsList);
 
 		Account.ACCOUNT_HASH_MAP.put(this.username, this);
     }
@@ -84,6 +87,22 @@ public class Account implements Serializable {
 
 	public ArrayList<UUID> getNewsIDList() {
 		return newsIDList;
+	}
+
+	public ArrayList<String> getTopicIDList() {
+		return topicIDList;
+	}
+
+	public ArrayList<String> getNotificationsList() {
+		return notificationsList;
+	}
+
+	public void addNotification(String notification){
+		notificationsList.add(notification);
+	}
+
+	public void remNotification(String notification){
+		notificationsList.remove(notification);
 	}
 
 	public String serialize() {

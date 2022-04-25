@@ -16,6 +16,8 @@ import pt.ubi.sd.g16.server.exceptions.NotFoundOnServerException;
 
 import pt.ubi.sd.g16.shared.*;
 
+import static java.util.Collections.addAll;
+
 public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 	private ArrayList<News> news_list; // ArrayList com todas as notícias
 	private ArrayList<Topic> topics_list; // ArrayList com todos os tópicos
@@ -205,9 +207,36 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 		return true;
 	}
 
+	public ArrayList<Account> loadAccount(){
+		ArrayList<Account> AccountList = new ArrayList<>();
+		File folder = new File(pathUsers);
+		File[] listOfFiles = folder.listFiles();
+		String[] fileAux;
+		Account user;
+
+		try {
+			for (File file : listOfFiles) {
+				if (file.isFile()) {
+					fileAux = file.getName().split("\\."); // Separa o nome do ficheiro da extensão
+					if (Objects.equals(fileAux[1], "json")) {
+						user = readAccount(file.getName()); // Lê o ficheiro para uma notícia
+						AccountList.add(user); // Adiciona a notícia à lista
+					}
+				}
+			}
+			if (!AccountList.isEmpty())
+				return AccountList;
+			else
+				return null;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+	}
+
 //---------------- PUBLISHER ----------------
 
-	public void addTopic(String id_topic, String title_topic, String desc_topic) throws IOException {  // P1, recebe id, título e descrição para criar um tópico novo.
+	public void addTopic(String id_topic, String title_topic, String desc_topic) throws IOException, Topic.TopicIDTakenException {  // P1, recebe id, título e descrição para criar um tópico novo.
 		Topic new_t = new Topic(id_topic, title_topic, desc_topic); // Cria um objecto do tipo tópico
 		topics_list.add(new_t); // Adiciona à lista de tópicos
 		updateConfig(); // Actualiza o ficheiro de configuração
@@ -220,8 +249,40 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 		return topics_list;
 	} // P2, devolve lista tópicos
 
+	public ArrayList<String> checkForNotifications(UUID idUser) throws IOException {
+			String filename = idUser + ".json";
+			Subscriber sub = (Subscriber) readAccount(filename);
+			ArrayList<String> notif_list = new ArrayList<>();
+			notif_list.addAll(sub.getNotificationsList());
+			sub.getNotificationsList().clear(); // Remove notificações do subscriber
+			saveAccount(sub); // Guarda subscriber
+			return notif_list;
+	}
+
+	public void notify(String idTopic) throws IOException { // Inicia processo de notificar os subscribers
+		Account aux;
+		ArrayList<Account> AccountList = loadAccount(); // Carrega todas as contas para uma lista
+		String notification = "";
+		Topic t_aux = null;
+		for (Topic t_a : topics_list) {    // Procura o título do tópico
+			if (t_a.getId() == idTopic)
+				notification = "There are unread news in topic " + t_aux.getTitle(); // Cria a mensagem de notificação
+		}
+		if (AccountList != null) { // Se existirem contas de utilizador
+			for (Account user : AccountList) {
+				if (user.getTopicIDList().contains(idTopic)) ; // Vai buscar aqueles que estão subscritos ao tópico
+				aux = readAccount((user.getUsername() + ".json"));
+				if (!aux.getNotificationsList().contains(notification)) { // Verifica se já não foi notificado
+					Subscriber sub = (Subscriber) user;
+					sub.addNotification(notification);
+					saveAccount(sub);
+				}
+			}
+		}
+	}
+
 	public void addNews(News n) throws IOException { // P3, adiciona uma notícia ao servidor
-		String id_topico = n.getTopic().getId(); // Obtem o id do tópico da notícia
+		String idTopic = n.getTopic().getId(); // Obtem o id do tópico da notícia
 		news_list.add(n); // Adiciona a notícia à lista de notícias
 		UUID news_id;
 		News aux = null;
@@ -229,14 +290,16 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 		Topic taux = null;
 
 		for (int i = 0; i < topics_list.size() ; i++) {  // Actualiza o tópico da notícia e a lista de tópicos
-			if (Objects.equals(topics_list.get(i).getId(), id_topico)) {
+			if (Objects.equals(topics_list.get(i).getId(), idTopic)) {
 				taux = topics_list.get(i);
 				taux.addNews(n);
 
+				notify(taux.getId()); // Tenta notificar todos subscribers deste tópico
+
 				if (topics_list.get(i).getNewsIDStock().size() > limit_topic) { // Verifica se a quantidade de notícias ultrapassa o limite
-					int tam = topics_list.get(i).getNewsIDStock().size();
+					int tam = topics_list.get(i).getNewsIDStock().size(); // Quantidade de notícias em stock do tópico pretendido
 					int count = 0;
-					while (count < tam / 2) {
+					while (count < tam / 2) { // Itera metade para ser movido para o backup
 						news_id = topics_list.get(i).getNewsIDStock().get((0));
 						for (int j = 0; j < news_list.size(); j++) {
 							if (news_list.get(j).getId() == news_id) {

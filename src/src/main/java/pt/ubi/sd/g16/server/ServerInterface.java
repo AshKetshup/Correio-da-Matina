@@ -28,7 +28,7 @@ public interface ServerInterface extends java.rmi.Remote{
 
      boolean loadNews() throws IOException;
 
-     void addTopic(String id_topic, String title_topic, String desc_topic) throws IOException;
+     void addTopic(String id_topic, String title_topic, String desc_topic) throws IOException, Topic.TopicIDTakenException;
 
      ArrayList<Topic> getTopics() throws java.rmi.RemoteException;
 
