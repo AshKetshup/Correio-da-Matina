@@ -9,14 +9,21 @@ import com.ashketshup.Landmark.ScreenManager;
 import com.ashketshup.Landmark.TUI.Notifications;
 
 import pt.ubi.sd.g16.server.ServerInterface;
+import pt.ubi.sd.g16.shared.Exceptions.FailedDeleteException;
+import pt.ubi.sd.g16.shared.Exceptions.PasswordNotMatchingException;
+import pt.ubi.sd.g16.shared.Exceptions.TopicIDTakenException;
+import pt.ubi.sd.g16.shared.Exceptions.UsernameTakenException;
+import pt.ubi.sd.g16.shared.Publisher;
 
+import java.io.IOException;
 import java.rmi.*;
 import java.util.Arrays;
 
 public class ClientMain extends java.rmi.server.UnicastRemoteObject implements ClientInterface {
-    public ClientMain() throws RemoteException{
+    public ClientMain() throws RemoteException {
         super();
     }
+
     public static void main(String[] args) {
         ScreenManager sM = new ScreenManager();
         Navigation nav = new Navigation(sM, 5);
