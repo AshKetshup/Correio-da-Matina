@@ -2,10 +2,11 @@ package pt.ubi.sd.g16.shared;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import pt.ubi.sd.g16.shared.Exceptions.FailedDeleteException;
 
-import java.io.File;
-import java.io.Serializable;
+import java.io.*;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -49,17 +50,6 @@ public class News implements Serializable {
 		NEWS_HASH_MAP.put(this.id, this);
 	}
 
-	public News(String jsonLine) {
-		News x = new Gson().fromJson(jsonLine, News.class);
-
-		this.id = x.getId();
-		this.title = x.getTitle();
-		this.content = x.getContent();
-		this.topic = x.getTopic();
-		this.publisher = x.getPublisher();
-		this.date = x.getDate();
-	}
-
 	public UUID getId() {
 		return id;
 	}
@@ -97,17 +87,58 @@ public class News implements Serializable {
 		return new SimpleDateFormat(datePattern).format(date);
 	}
 
+	public static News getNewsFromID(UUID newsID) {
+		return NEWS_HASH_MAP.get(newsID);
+	}
+
 	@Override
 	public String toString() {
-		return title + "\t" + topic.getTitle() + "\t" + publisher.getUsername() + "\t" + getNewsDate() + "\n";
+		return title + "\t" + topic.getTitle() + "\t" + publisher.getID() + "\t" + getNewsDate() + "\n";
 	}
+
+	// region "Read, Load and Save"
+	public static void read(File file) throws IOException {
+		FileReader fileReader = new FileReader(file);
+		char[] content = new char[(int) file.length()];
+		fileReader.read(content);
+
+		new News(Arrays.toString(content));
+	}
+
+	public static boolean load() throws FileNotFoundException {
+		File folder = new File(PATH_NEWS);
+		File[] listOfFiles = folder.listFiles();
+
+		if (listOfFiles == null)
+			throw new FileNotFoundException();
+
+		try {
+			for (File file : listOfFiles)
+				// Caso seja um ficheiro com extensão json
+				if (file.isFile() && file.getName().endsWith(".json"))
+					read(file);
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+
+		return true;
+	}
+
+	public void save() throws IOException {
+		File fileDir = new File(PATH_NEWS);
+		String fileName = this.id + ".json";
+		File file = new File(fileDir, fileName);
+
+		FileWriter fileWriter = new FileWriter(file);
+		fileWriter.write(this.serialize());
+		fileWriter.flush();
+		fileWriter.close();
+	}
+	// endregion
 
 	public String serialize() {
 		return new Gson().toJson(this);
-	}
-
-	public static News getNewsFromID(UUID newsID) {
-		return NEWS_HASH_MAP.get(newsID);
 	}
 
 	public boolean delNewsFile() { // Apaga ficheiro da notícia
@@ -116,21 +147,15 @@ public class News implements Serializable {
         return f.delete();
     }
 
-	public News popFromID(UUID newsID) throws Exception {
+	public static HashMap<UUID, News> getNewsHashMap() { return NEWS_HASH_MAP; }
+
+	public static News popFromID(UUID newsID) throws FailedDeleteException {
         // Guardar numa variavel a Noticia vinda do ID
         News toPop = getNewsFromID(newsID);
 
-		// Tentar apagar dos publishers
-		if (!toPop.publisher.deleteNewsID(newsID))
-			throw new Exception(); // TODO: Criar Exception custom por não existir Noticia no Publisher
-
-		// Tentar apagar dos topicos
-		if (!toPop.topic.deleteNewsID(newsID))
-			throw new Exception(); // TODO: Criar Exception custom por não existir Noticia no Topico
-
-		// Tenta apagar o ficheiro
-		if (!toPop.delNewsFile())
-			throw new Exception(); // TODO: Criar Exceoption custom por não conseguir eliminar ficheiro
+		// Tentar apagar dos publishers || topicos || ficheiros
+		if (!toPop.publisher.deleteNewsID(newsID) || !toPop.topic.deleteNewsID(newsID) || !toPop.delNewsFile())
+			throw new FailedDeleteException();
 
 		// Apagar do registo da HashMap
 		NEWS_HASH_MAP.remove(newsID);

@@ -1,11 +1,15 @@
 package pt.ubi.sd.g16.shared;
 
 import com.google.gson.Gson;
+import pt.ubi.sd.g16.shared.Exceptions.TopicIDTakenException;
 
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.UUID;
+
+import static pt.ubi.sd.g16.shared.FileManager.PATH_TOPICS;
 
 public class Topic implements Serializable {
     private static final HashMap<String, Topic> TOPIC_HASH_MAP = new HashMap<>();
@@ -15,12 +19,6 @@ public class Topic implements Serializable {
     private String description;
     private final ArrayList<UUID> newsIDList = new ArrayList<>();
     private boolean archivedNews;
-
-    public static class TopicIDTakenException extends Exception {
-        public TopicIDTakenException() {
-            super("This TopicID is already taken.");
-        }
-    }
 
     public Topic(String id, String title, String description) throws TopicIDTakenException {
         if (Topic.isIDUsed(id))
@@ -40,19 +38,10 @@ public class Topic implements Serializable {
         this.id = x.getId();
         this.title = x.getTitle();
         this.description = x.getDescription();
-        this.newsIDList.addAll(x.getNewsIDStock());
+        this.newsIDList.addAll(x.getNewsIDList());
         this.archivedNews = x.isArchivedNews();
 
         TOPIC_HASH_MAP.put(id, this);
-    }
-
-    public static Topic getTopicFromID(String topicID) throws NullPointerException {
-        Topic x = TOPIC_HASH_MAP.get(topicID);
-
-        if (x == null)
-            throw new NullPointerException();
-
-        return x;
     }
 
     public String getId() {
@@ -67,7 +56,7 @@ public class Topic implements Serializable {
         return description;
     }
 
-    public ArrayList<UUID> getNewsIDStock() {
+    public ArrayList<UUID> getNewsIDList() {
         return newsIDList;
     }
 
@@ -88,24 +77,77 @@ public class Topic implements Serializable {
     }
 
     public void addNews(News news) {
-        newsIDStock.add(news.getId());
+        newsIDList.add(news.getId());
     }
 
-    public boolean delNewsStock(UUID newsID){ return newsIDList.remove(newsID);}
-
     public void addNews(UUID newsID) {
-        newsIDStock.add(newsID);
+        newsIDList.add(newsID);
     }
 
     public boolean deleteNewsID(UUID newsID) {
 		return newsIDList.remove(newsID);
 	}
 
-    private static boolean isIDUsed(String username) {
-		return TOPIC_HASH_MAP.containsKey(username);
-	}
-
     public String serialize() {
         return new Gson().toJson(this);
     }
+
+	// region "Read, Load and Save"
+	public static void read(File file) throws IOException {
+		FileReader fileReader = new FileReader(file);
+		char[] content = new char[(int) file.length()];
+		fileReader.read(content);
+
+		new Topic(Arrays.toString(content));
+	}
+
+	public static boolean load() throws FileNotFoundException {
+		File folder = new File(PATH_TOPICS);
+		File[] listOfFiles = folder.listFiles();
+
+		if (listOfFiles == null)
+			throw new FileNotFoundException();
+
+		try {
+			for (File file : listOfFiles)
+				// Caso seja um ficheiro com extensão json
+				if (file.isFile() && file.getName().endsWith(".json"))
+					read(file);
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+
+		return true;
+	}
+
+	public void save() throws IOException {
+		File fileDir = new File(PATH_TOPICS);
+		String fileName = this.id + ".json";
+		File file = new File(fileDir, fileName);
+
+		FileWriter fileWriter = new FileWriter(file);
+		fileWriter.write(this.serialize());
+		fileWriter.flush();
+		fileWriter.close();
+	}
+	// endregion
+
+    public static HashMap<String, Topic> getTopicHashMap() {
+        return TOPIC_HASH_MAP;
+    }
+
+    public static Topic getTopicFromID(String topicID) throws NullPointerException {
+        Topic x = TOPIC_HASH_MAP.get(topicID);
+
+        if (x == null)
+            throw new NullPointerException();
+
+        return x;
+    }
+
+
+    private static boolean isIDUsed(String username) {
+		return TOPIC_HASH_MAP.containsKey(username);
+	}
 }
