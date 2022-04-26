@@ -5,34 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e8256652-a054-4cdb-b362-9110743e1e06" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/intellij-javadocs-4.0.1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/Exceptions/FailedDeleteException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/Exceptions/PasswordNotMatchingException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/Exceptions/UsernameTakenException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.1.1/dependencies-accessors/dependencies-accessors.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.1.1/dependencies-accessors/dependencies-accessors.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.1.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.1.1/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.1.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.1.1/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.1.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.1.1/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.1.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.1.1/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/client/ClientMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/client/ClientMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/server/Server/Servidor_noticias.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/server/Server/Servidor_noticias_impl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/server/Server/Servidor_noticias_interface.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/server/ServerImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/server/ServerImp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/server/ServerInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/server/ServerInterface.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/Account.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/FileManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/FileManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/Login.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/News.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/News.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/Publisher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/Publisher.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/Settings.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/Settings.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/Subscriber.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/Subscriber.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/Topic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/Topic.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,7 +48,7 @@
     <hideBySeverity>
       <option value="15" />
     </hideBySeverity>
-    <option name="selectedTabId" value="ProjectErrors" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectId" id="27vTbM16YjHmXplMbZbfWyBWg4n" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />

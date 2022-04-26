@@ -18,6 +18,7 @@ import pt.ubi.sd.g16.shared.Exceptions.FailedDeleteException;
 import pt.ubi.sd.g16.shared.Exceptions.PasswordNotMatchingException;
 import pt.ubi.sd.g16.shared.Exceptions.TopicIDTakenException;
 import pt.ubi.sd.g16.shared.Exceptions.UsernameTakenException;
+import static pt.ubi.sd.g16.shared.FileManager.PATH_USERS;
 
 public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 	private int limit_topic; // Limite de notícias por tópico antes de serem enviadas para o servidorBackup
@@ -42,10 +43,41 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 		Files.createDirectories((Paths.get(pathUsers))); // Cria pasta para utilizadores
 	}
 
-	public void loadConfig() throws RemoteException, IOException { // Inicializar configurações
+	public void loadConfig() { // Inicializar configurações
 		Settings config = Settings.load();
 
 		limit_topic = config.getLimit_topics(); // Actualiza os valores das configs.
+	}
+
+    public ArrayList<String> checkForNotifications(UUID idUser) throws IOException {
+			String filename = idUser + ".json";
+            File file = new File(new File(PATH_USERS), filename);
+
+			Subscriber sub = (Subscriber) Account.read(file);
+			ArrayList<String> notif_list = new ArrayList<>(sub.getNotificationsList()); // Copiar para um novo Array
+			sub.getNotificationsList().clear();                                         // Remove notificações do subscriber
+			sub.save();                                                                 // Guarda subscriber
+			return notif_list;
+	}
+
+    // Inicia processo de notificar os subscribers
+	public void notify(String idTopic) throws IOException {
+		Account aux = null;
+		Account.load();                     // Carrega todas as contas
+		Topic t_aux = Topic.getTopicFromID(idTopic);
+        String notification = "There are unread news in topic " + t_aux.getTitle();
+
+        for (Account user : Account.getAccountHashMap().values()) {
+            if (user.getTopicIDList().contains(idTopic)) {
+                aux = Account.read(new File(new File(PATH_USERS), user.getID() + ".json"));
+
+                if (!aux.getNotificationsList().contains(notification)) {
+                    Subscriber sub = (Subscriber) user;
+                    sub.addNotification(notification);
+                    sub.save();
+                }
+            }
+        }
 	}
 
     // region Login
@@ -66,6 +98,9 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 
 		Topic topicAux = Topic.getTopicFromID(news.getTopic().getId());
 		topicAux.addNews(news);
+
+        // Tenta notificar todos os subscribers deste topico
+        notify(topicAux.getId());
 
 		for (int i = 0; i < topicAux.getNewsIDList().size() / 2; i++) {
 			UUID newsID = topicAux.getNewsIDList().get(0);

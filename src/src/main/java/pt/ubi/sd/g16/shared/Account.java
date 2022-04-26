@@ -28,6 +28,7 @@ public class Account implements Serializable {
     private final String saltedPassword;
     private final ArrayList<UUID> newsIDList = new ArrayList<>();
     private final ArrayList<String> topicIDList = new ArrayList<>();
+	private final ArrayList<String> notificationsList = new ArrayList<>();
 
 	public Account(String username, String password, String passwordConfirm, int rank)
 		throws PasswordNotMatchingException, NoSuchAlgorithmException, UsernameTakenException {
@@ -51,8 +52,10 @@ public class Account implements Serializable {
 		this.id = x.id;
 		this.rank = x.rank;
 		this.salt = x.salt;
-		this.saltedPassword = x.saltedPassword;
-		this.newsIDList.addAll(x.newsIDList);
+		this.saltedPassword = x.getSaltedPassword();
+		this.newsIDList.addAll(x.getNewsIDList());
+		this.topicIDList.addAll(x.getTopicIDList());
+		this.notificationsList.addAll(x.getNotificationsList());
 
 		Account.ACCOUNT_HASH_MAP.put(this.id, this);
     }
@@ -83,6 +86,18 @@ public class Account implements Serializable {
 
 	public ArrayList<String> getTopicIDList() { return topicIDList; }
 
+	public ArrayList<String> getNotificationsList() {
+		return notificationsList;
+	}
+
+	public void addNotification(String notification){
+		notificationsList.add(notification);
+	}
+
+	public void delNotification(String notification){
+		notificationsList.remove(notification);
+	}
+
 	public String serialize() {
         return new Gson().toJson(this);
     }
@@ -95,7 +110,7 @@ public class Account implements Serializable {
 		return ACCOUNT_HASH_MAP.containsKey(username);
 	}
 
-	public static byte[] getNextSalt() {
+	private static byte[] getNextSalt() {
 		byte[] salt = new byte[16];
 		new SecureRandom().nextBytes(salt);
 		return salt;
@@ -159,18 +174,6 @@ public class Account implements Serializable {
 		fileWriter.close();
 	}
 	// endregion
-
-	private static byte[] secureSalt() throws NoSuchProviderException, NoSuchAlgorithmException {
-	    //Always use SecureRandom generator
-	    SecureRandom secureRandom = SecureRandom.getInstance("MD5","SUN");
-
-	    //create array for salt
-	    byte[] salt = new byte[16]; //size of byte array = 16
-
-	    //get a random salt
-	    secureRandom.nextBytes(salt);
-	    return salt;
-	}
 
     private static String securePassword(String password, byte[] salt) throws NoSuchAlgorithmException {
 		MessageDigest msgDigest = MessageDigest.getInstance("SHA-256");

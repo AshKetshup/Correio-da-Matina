@@ -21,6 +21,8 @@ import java.util.UUID;
 public interface ServerInterface extends Remote {
 
     void loadConfig() throws IOException;
+    ArrayList<String> checkForNotifications(UUID idUser) throws IOException;
+    void notify(String idTopic) throws IOException;
 
     // region Login
     Account login(String username, String password) throws RemoteException, NoSuchAlgorithmException;
