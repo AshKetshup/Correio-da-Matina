@@ -62,6 +62,8 @@ public class Connection extends Thread implements Connection_inter{
 		            		News n = (News)is.readObject();
 		            		receiveNews(n);
 		            		break;
+		            		
+		            		//os 0-2 são chamados pelo cliente, caso 3 é server noticias que chama usando para mover os 50% enviados pelo server noticias para o backup para serem respetivamente armazenados
 		            
 		            }
 		            
