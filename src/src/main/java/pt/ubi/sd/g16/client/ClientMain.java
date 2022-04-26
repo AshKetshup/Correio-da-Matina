@@ -3,23 +3,17 @@ package pt.ubi.sd.g16.client;
 import com.ashketshup.Landmark.Screens.Form;
 import com.ashketshup.Landmark.Screens.Menu;
 import com.ashketshup.Landmark.UIElements.Component;
-import com.ashketshup.Landmark.UIElements.Option;
 import com.ashketshup.Landmark.Navigation;
 import com.ashketshup.Landmark.ScreenManager;
 import com.ashketshup.Landmark.TUI.Notifications;
 
+import com.ashketshup.Landmark.UIElements.Option;
 import pt.ubi.sd.g16.server.ServerInterface;
-import pt.ubi.sd.g16.shared.Exceptions.FailedDeleteException;
-import pt.ubi.sd.g16.shared.Exceptions.PasswordNotMatchingException;
-import pt.ubi.sd.g16.shared.Exceptions.TopicIDTakenException;
-import pt.ubi.sd.g16.shared.Exceptions.UsernameTakenException;
-import pt.ubi.sd.g16.shared.Publisher;
 
-import java.io.IOException;
 import java.rmi.*;
 import java.util.Arrays;
 
-public class ClientMain extends java.rmi.server.UnicastRemoteObject implements ClientInterface {
+public class ClientMain extends java.rmi.server.UnicastRemoteObject {
     public ClientMain() throws RemoteException {
         super();
     }
@@ -70,7 +64,7 @@ public class ClientMain extends java.rmi.server.UnicastRemoteObject implements C
             new Form(
                 "Register Form",
                 Arrays.asList(
-                    new Component("[Subscriber / Publisher]", false, true),
+                    new Component("Subscriber / Publisher [0 / 1]", false, true),
                     new Component("Username", false, true),
                     new Component("Password", true, true),
                     new Component("Confirm Password", true, true)
@@ -87,12 +81,52 @@ public class ClientMain extends java.rmi.server.UnicastRemoteObject implements C
             )
         );
 
+        sM.addForm(
+            "consult_last_from_topic_form",
+            new Form(
+                "Consult Last News from a Topic",
+                Arrays.asList(
+                    new Component("TopicID", false, true)
+                ),
+                sM
+            )
+        );
+
+        sM.addMenu(
+            "guest_menu",
+            new Menu(
+                "Guest Menu",
+                Arrays.asList(
+                    new Option(
+                        "Consult News",
+                        () -> {}
+                    ),
+                    new Option(
+                        "Consult Last News from a Topic",
+                        () -> { sM.bindScreen(sM.getForm("consult_last_from_topic_form")); }
+                    )
+                ),
+                sM
+            )
+        );
+
         sM.addMenu(
             "welcome_menu",
             new Menu(
                 "Welcome to Correio da Matina",
                 Arrays.asList(
-                    
+                    new Option(
+                        "Login",
+                        () -> { sM.bindScreen(sM.getForm("login_form")); }
+                    ),
+                    new Option(
+                        "Register",
+                        () -> { sM.bindScreen(sM.getForm("register_form")); }
+                    ),
+                    new Option(
+                        "Continue as Guest",
+                        () -> { sM.bindScreen(); }
+                    )
                 ),
                 sM
             )

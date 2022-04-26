@@ -18,7 +18,6 @@ public class Topic implements Serializable {
     private String title;
     private String description;
     private final ArrayList<UUID> newsIDList = new ArrayList<>();
-    private boolean archivedNews;
 
     public Topic(String id, String title, String description) throws TopicIDTakenException {
         if (Topic.isIDUsed(id))
@@ -27,7 +26,6 @@ public class Topic implements Serializable {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.archivedNews = false;
 
         TOPIC_HASH_MAP.put(id, this);
     }
@@ -39,7 +37,6 @@ public class Topic implements Serializable {
         this.title = x.getTitle();
         this.description = x.getDescription();
         this.newsIDList.addAll(x.getNewsIDList());
-        this.archivedNews = x.isArchivedNews();
 
         TOPIC_HASH_MAP.put(id, this);
     }
@@ -58,14 +55,6 @@ public class Topic implements Serializable {
 
     public ArrayList<UUID> getNewsIDList() {
         return newsIDList;
-    }
-
-    public boolean isArchivedNews() {
-        return archivedNews;
-    }
-
-    public void setArchivedNews(boolean archivedNews) {
-        this.archivedNews = archivedNews;
     }
 
     public void setTitle(String title) {
