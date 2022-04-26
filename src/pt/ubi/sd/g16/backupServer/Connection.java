@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -35,18 +36,51 @@ public class Connection extends Thread implements Connection_inter{
 	
 	public void run(){
 		loadNews();
-		//apresenta noticias no servidor
-		//for(int i=0; i<news_list.size(); i++) {
-		//	System.out.println(news_list.get(i).toString());
-		//}
+		Socket s;
+        while(true) {
+            synchronized(S) {
+                try {
+					s = S.accept();
+					ObjectOutputStream os = new ObjectOutputStream(s.getOutputStream());
+		            ObjectInputStream is = new ObjectInputStream(s.getInputStream());
+		                      
+		            switch((int)is.readObject()) {
+		            	case 0: // chama o método getNews que devolve um ArrayList com todas as notícias em backup
+		            		ArrayList<News> getNews = getNews(); 
+		            		os.writeObject(getNews);
+		            		break;
+		            	case 1: // chama o método seekTopic que devolve os IDs de todos os tópicos com noticias em arquivo 
+		            		ArrayList<String> seekTopic = seekTopics();
+		            		os.writeObject(seekTopic);
+		            		break;
+		            	case 2: // chama o método getNews_Topic que recebe uma string com o id do tópico das notícias que pretende observar e devolve o ArrayList com essas mesmas notícias dado o tópico
+		            		String idTopic = (String)is.readObject();
+		            		ArrayList<News> getNewsTopic = getNews_Topic(idTopic); 
+		            		os.writeObject(getNewsTopic);
+		            		break;
+		            	case 3: // chama o método receiveNews que recebe uma notícia e atualiza o ficheiro da pasta que contém as notícias
+		            		News n = (News)is.readObject();
+		            		receiveNews(n);
+		            		break;
+		            
+		            }
+		            
+		            os.flush();
+		            os.close();
+		            is.close();  
+				} catch (ClassNotFoundException | IOException e) {
+					e.printStackTrace();
+				}
+            }    
+        }
 	}
 	
-	public ArrayList<News> getNews() {
+	public ArrayList<News> getNews() { // 0 - Envia a lista de notícias
 		return news_list;
-	} // P4 Envia a lista de notícias
+	} 
 
 	
-	public ArrayList<String> seekTopics(){ //devolve os IDs de todos os tópicos com noticias em arquivo
+	public ArrayList<String> seekTopics(){ // 1 - devolve os IDs de todos os tópicos com noticias em arquivo
 		ArrayList<String> topics = new ArrayList<>();
 		for(News n : news_list) {
 			if(!topics.contains(n.getTopic().getId())) {
@@ -56,7 +90,7 @@ public class Connection extends Thread implements Connection_inter{
 		return topics;
 	}
 	
-	public ArrayList<News> getNews_Topic(String id_topic){ //devolve as noticias do topico pretendido
+	public ArrayList<News> getNews_Topic(String id_topic){ // 2 - devolve as noticias do topico pretendido
 		ArrayList<News> newsList = new ArrayList<>();
 		for(News n : news_list) {
 			if(n.getTopic().getId().equals(id_topic)) {
@@ -66,7 +100,7 @@ public class Connection extends Thread implements Connection_inter{
 		return newsList;
 	}
 	
-	public void receiveNews(News n) throws IOException{
+	public void receiveNews(News n) throws IOException{ // 3 
 		updateNews(n);
 	}
 	
@@ -81,9 +115,8 @@ public class Connection extends Thread implements Connection_inter{
 		fout.close();
 	}
 	
-	
-	// Carrega as notícias para o arrayList
-	public boolean loadNews() {                
+
+	public boolean loadNews() {  // Carrega as notícias para o arrayList            
 		news_list = new ArrayList<News>();
 		File folder = new File(pathNews);
 		File[] listOfFiles = folder.listFiles();
@@ -107,7 +140,8 @@ public class Connection extends Thread implements Connection_inter{
 		return true;
 	}
 	
-	public News readNews(String filename) {
+	
+	public News readNews(String filename) { 
 		File dir = new File(pathNews); // Pasta
 		File f = new File(dir, filename); // Nome do ficheiro
 		News n = null;
