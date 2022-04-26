@@ -1,4 +1,4 @@
-package pt.ubi.sd.g16.backupServer;
+package src.main.java.pt.ubi.sd.g16.backupServer;
 
 import java.io.File;
 import java.io.FileReader;
