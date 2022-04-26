@@ -17,7 +17,7 @@ import src.main.java.pt.ubi.sd.g16.shared.News;
 import src.main.java.pt.ubi.sd.g16.shared.Settings;
 import src.main.java.pt.ubi.sd.g16.shared.Topic;
 
-public class Connection extends Thread implements Connection_inter{
+public class Connection extends Thread{
 	
 	private ServerSocket S;
 	
