@@ -14,14 +14,13 @@ import java.util.stream.Collectors;
 import pt.ubi.sd.g16.server.exceptions.NotFoundOnServerException;
 
 import pt.ubi.sd.g16.shared.*;
-import pt.ubi.sd.g16.shared.Exceptions.FailedDeleteException;
-import pt.ubi.sd.g16.shared.Exceptions.PasswordNotMatchingException;
-import pt.ubi.sd.g16.shared.Exceptions.TopicIDTakenException;
-import pt.ubi.sd.g16.shared.Exceptions.UsernameTakenException;
+import pt.ubi.sd.g16.shared.Exceptions.*;
+
 import static pt.ubi.sd.g16.shared.FileManager.PATH_USERS;
 
 public class ServerImp extends UnicastRemoteObject implements ServerInterface {
-	private int limit_topic; // Limite de notícias por tópico antes de serem enviadas para o servidorBackup
+    // Limite de notícias por tópico antes de serem enviadas para o servidorBackup
+	private int limit_topic;
 
 	private static final String pathConfig = "config.json";
 	private static final String pathData = System.getProperty("user.dir") + File.separator + "data";
@@ -35,6 +34,7 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 
 		News.load();
 		Topic.load();
+		Account.load();
 
 		loadConfig(); // inicializa as variáveis e limit_topic
 
@@ -81,7 +81,7 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 	}
 
     // region Login
-	public Account login(String username, String password) throws RemoteException, NoSuchAlgorithmException {
+	public Account login(String username, String password) throws RemoteException, NoSuchAlgorithmException, WrongPasswordException {
         return Account.login(username, password);
 	}
     // endregion
@@ -101,17 +101,16 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 
         // Tenta notificar todos os subscribers deste topico
         notify(topicAux.getId());
+        if (topicAux.getNewsIDList().size() > limit_topic)
+            for (int i = 0; i < topicAux.getNewsIDList().size() / 2; i++) {
+                UUID newsID = topicAux.getNewsIDList().get(0);
 
-		for (int i = 0; i < topicAux.getNewsIDList().size() / 2; i++) {
-			UUID newsID = topicAux.getNewsIDList().get(0);
-			News n = News.getNewsFromID(newsID);
+                if (newsID != null) {
+                    backupNews(newsID);
 
-			if (n != null) {
-				backupNews(n);
-
-				topicAux.deleteNewsID(topicAux.getNewsIDList().get(0));
-			}
-		}
+                    topicAux.deleteNewsID(topicAux.getNewsIDList().get(0));
+                }
+            }
 
 		topicAux.save(); // Actualiza o ficheiro de tópicos
 	}
@@ -218,13 +217,13 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
     // endregion
 
     // Envia só para o servidor de backup
-    public void backupNews(News n) throws IOException, FailedDeleteException {
+    public void backupNews(UUID newsID) throws IOException, FailedDeleteException {
         Socket s = new Socket("127.0.0.1", 1200);
         ObjectOutputStream os = new ObjectOutputStream(s.getOutputStream());
 
         os.writeObject(3);
         os.flush();
-        os.writeObject(News.popFromID(n.getId()));
+        os.writeObject(News.popFromID(newsID));
         os.flush();
 
         os.close();

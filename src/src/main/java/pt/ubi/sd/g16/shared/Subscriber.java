@@ -5,7 +5,6 @@ import pt.ubi.sd.g16.shared.Exceptions.PasswordNotMatchingException;
 import pt.ubi.sd.g16.shared.Exceptions.UsernameTakenException;
 
 import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 
 public class Subscriber extends Account {
     public Subscriber(String username, String password, String passwordConfirm, int rank)
@@ -21,7 +20,7 @@ public class Subscriber extends Account {
         getTopicIDList().add(topicID);
     }
 
-    public void unsubscribeTopid(String topicID){
+    public void unsubscribeTopic(String topicID){
         getTopicIDList().remove(topicID);
     }
 }

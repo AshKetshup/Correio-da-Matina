@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import pt.ubi.sd.g16.shared.Exceptions.PasswordNotMatchingException;
 import pt.ubi.sd.g16.shared.Exceptions.UsernameTakenException;
+import pt.ubi.sd.g16.shared.Exceptions.WrongPasswordException;
 
 import java.io.*;
 import java.lang.reflect.Array;
@@ -125,11 +126,11 @@ public class Account implements Serializable {
         return x;
     }
 
-	public static Account login(String username, String password) throws NullPointerException, NoSuchAlgorithmException {
+	public static Account login(String username, String password) throws NoSuchAlgorithmException, WrongPasswordException {
 		Account x = getAccountFromID(username);
 
 		if (!x.saltedPassword.equals(securePassword(password, x.getSalt())))
-			return null;
+			throw new WrongPasswordException();
 
 		return x;
 	}

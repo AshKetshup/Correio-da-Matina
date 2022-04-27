@@ -6,8 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="e8256652-a054-4cdb-b362-9110743e1e06" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/client/ClientInterface.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/client/ClientMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/client/ClientMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/client/Session.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/client/Session.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/server/ServerImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/server/ServerImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/server/ServerInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/server/ServerInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/Account.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/News.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/News.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/Subscriber.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/Subscriber.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/Topic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ubi/sd/g16/shared/Topic.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

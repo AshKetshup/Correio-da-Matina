@@ -93,7 +93,11 @@ public class News implements Serializable {
 
 	@Override
 	public String toString() {
-		return title + "\t" + topic.getTitle() + "\t" + publisher.getID() + "\t" + getNewsDate() + "\n";
+		String stringTitle = ((title.length() > 30) ? title.substring(0, 30) : title);
+		String stringTopic = ((topic.getTitle().length() > 15) ? topic.getTitle().substring(0, 15) : topic.getTitle());
+		String stringPublisher = ((publisher.getID().length() > 10) ? publisher.getID().substring(0, 10) : publisher.getID());
+
+		return id.toString() + "\t" + stringTitle + "\t" + stringTopic + "\t" + stringPublisher + "\t" + getNewsDate();
 	}
 
 	// region "Read, Load and Save"

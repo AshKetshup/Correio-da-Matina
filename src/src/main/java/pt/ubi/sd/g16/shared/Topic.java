@@ -135,7 +135,6 @@ public class Topic implements Serializable {
         return x;
     }
 
-
     private static boolean isIDUsed(String username) {
 		return TOPIC_HASH_MAP.containsKey(username);
 	}

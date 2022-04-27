@@ -2,10 +2,7 @@ package pt.ubi.sd.g16.server;
 
 import pt.ubi.sd.g16.server.exceptions.NotFoundOnServerException;
 import pt.ubi.sd.g16.shared.Account;
-import pt.ubi.sd.g16.shared.Exceptions.FailedDeleteException;
-import pt.ubi.sd.g16.shared.Exceptions.PasswordNotMatchingException;
-import pt.ubi.sd.g16.shared.Exceptions.TopicIDTakenException;
-import pt.ubi.sd.g16.shared.Exceptions.UsernameTakenException;
+import pt.ubi.sd.g16.shared.Exceptions.*;
 import pt.ubi.sd.g16.shared.News;
 import pt.ubi.sd.g16.shared.Publisher;
 import pt.ubi.sd.g16.shared.Topic;
@@ -25,7 +22,7 @@ public interface ServerInterface extends Remote {
     void notify(String idTopic) throws IOException;
 
     // region Login
-    Account login(String username, String password) throws RemoteException, NoSuchAlgorithmException;
+    Account login(String username, String password) throws RemoteException, NoSuchAlgorithmException, WrongPasswordException;
     // endregion
 
     // region Add
@@ -63,5 +60,5 @@ public interface ServerInterface extends Remote {
         throws RemoteException, NotFoundOnServerException;
     // endregion
 
-    void backupNews(News n) throws IOException, FailedDeleteException;
+    void backupNews(UUID newsID) throws IOException, FailedDeleteException;
 }
