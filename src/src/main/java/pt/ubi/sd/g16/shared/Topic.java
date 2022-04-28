@@ -91,13 +91,14 @@ public class Topic implements Serializable {
 	}
 
 	public static boolean load() throws FileNotFoundException {
-		File folder = new File(PATH_TOPICS);
-		File[] listOfFiles = folder.listFiles();
+        File folder = new File(PATH_TOPICS);
+        File[] listOfFiles = folder.listFiles();
 
-		if (listOfFiles == null)
-			throw new FileNotFoundException();
-
-		try {
+        if (listOfFiles == null){
+            System.out.println("No topics to load.");
+            return false;
+        }
+        try {
 			for (File file : listOfFiles)
 				// Caso seja um ficheiro com extensão json
 				if (file.isFile() && file.getName().endsWith(".json"))

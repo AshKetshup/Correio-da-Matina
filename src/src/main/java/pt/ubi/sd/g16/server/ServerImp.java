@@ -27,10 +27,9 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 	public ServerImp() throws IOException {
 		super();
 
-		News.load();
-		Topic.load();
-		Account.load();
-
+        News.load();
+        Topic.load();
+        Account.load();
 		loadConfig(); // inicializa as variáveis e limit_topic
 
 		Files.createDirectories((Paths.get(PATH_NEWS))); // Cria pasta data/news

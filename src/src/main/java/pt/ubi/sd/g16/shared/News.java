@@ -113,8 +113,10 @@ public class News implements Serializable {
 		File folder = new File(PATH_NEWS);
 		File[] listOfFiles = folder.listFiles();
 
-		if (listOfFiles == null)
-			throw new FileNotFoundException();
+		if (listOfFiles == null) {
+			System.out.println("No news to load.");
+			return false;
+		}
 
 		try {
 			for (File file : listOfFiles)

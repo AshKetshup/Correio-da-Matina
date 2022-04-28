@@ -148,9 +148,10 @@ public class Account implements Serializable {
 		File folder = new File(PATH_USERS);
 		File[] listOfFiles = folder.listFiles();
 
-		if (listOfFiles == null)
-			throw new FileNotFoundException();
-
+		if (listOfFiles == null) {
+			System.out.println("No accounts to load.");
+			return false;
+		}
 		try {
 			for (File file : listOfFiles)
 				// Caso seja um ficheiro com extensão json

@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'pt.ubi.sd.g16'
-version '1.0_Server'
+version '1.0_Client'
 
 repositories {
     flatDir {
@@ -25,18 +25,18 @@ test {
     useJUnitPlatform()
 }
 
-//jar {
-//    manifest {
-//        attributes('Main-Class': 'pt.ubi.sd.g16.client.ClientMain'
-//        )
-//    }
-//
-//    from {
-//        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-//    }
-//}
-
 jar {
+    manifest {
+        attributes('Main-Class': 'pt.ubi.sd.g16.client.ClientMain'
+        )
+    }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+/*jar {
     manifest {
         attributes('Main-Class': 'pt.ubi.sd.g16.server.ServerMain')
     }
@@ -44,7 +44,7 @@ jar {
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
-}
+}*/
 
 //jar {
 //    manifest {
