@@ -16,18 +16,13 @@ import pt.ubi.sd.g16.server.exceptions.NotFoundOnServerException;
 import pt.ubi.sd.g16.shared.*;
 import pt.ubi.sd.g16.shared.Exceptions.*;
 
-import static pt.ubi.sd.g16.shared.FileManager.PATH_USERS;
+import static pt.ubi.sd.g16.shared.FileManager.*;
 
 public class ServerImp extends UnicastRemoteObject implements ServerInterface {
     // Limite de notícias por tópico antes de serem enviadas para o servidorBackup
 	private int limit_topic;
 
-	private static final String pathConfig = "config.json";
-	private static final String pathData = System.getProperty("user.dir") + File.separator + "data";
-	private static final String pathNews = pathData + File.separator + "news";
-	private static final String pathTopics = pathData + File.separator + "topics";
-	private static final String pathUsers = pathData + File.separator + "users";
-	private static final String backupServerIP = "127.0.0.1:1200";
+	private static final String backupServerIP = ServerMain.getServerName() + ":1200";
 
 	public ServerImp() throws IOException {
 		super();
@@ -38,9 +33,9 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 
 		loadConfig(); // inicializa as variáveis e limit_topic
 
-		Files.createDirectories((Paths.get(pathNews))); // Cria pasta data/news
-		Files.createDirectories((Paths.get(pathTopics))); // Cria pasta data/topics
-		Files.createDirectories((Paths.get(pathUsers))); // Cria pasta para utilizadores
+		Files.createDirectories((Paths.get(PATH_NEWS))); // Cria pasta data/news
+		Files.createDirectories((Paths.get(PATH_TOPICS))); // Cria pasta data/topics
+		Files.createDirectories((Paths.get(PATH_USERS))); // Cria pasta para utilizadores
 	}
 
 	public void loadConfig() { // Inicializar configurações
@@ -54,22 +49,27 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
             File file = new File(new File(PATH_USERS), filename);
 
 			Subscriber sub = (Subscriber) Account.read(file);
-			ArrayList<String> notif_list = new ArrayList<>(sub.getNotificationsList()); // Copiar para um novo Array
-			sub.getNotificationsList().clear();                                         // Remove notificações do subscriber
-			sub.save();                                                                 // Guarda subscriber
+
+            // Copiar para um novo Array
+			ArrayList<String> notif_list = new ArrayList<>(sub.getNotificationsList());
+            // Remove notificações do subscriber
+			sub.getNotificationsList().clear();
+            // Guarda subscriber
+			sub.save();
+
 			return notif_list;
 	}
 
     // Inicia processo de notificar os subscribers
 	public void notify(String idTopic) throws IOException {
-		Account aux = null;
-		Account.load();                     // Carrega todas as contas
+        // Carrega todas as contas
+		Account.load();
 		Topic t_aux = Topic.getTopicFromID(idTopic);
         String notification = "There are unread news in topic " + t_aux.getTitle();
 
         for (Account user : Account.getAccountHashMap().values()) {
             if (user.getTopicIDList().contains(idTopic)) {
-                aux = Account.read(new File(new File(PATH_USERS), user.getID() + ".json"));
+                Account aux = Account.read(new File(new File(PATH_USERS), user.getID() + ".json"));
 
                 if (!aux.getNotificationsList().contains(notification)) {
                     Subscriber sub = (Subscriber) user;
@@ -161,7 +161,7 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
     public ArrayList<News> getAllNews() throws RemoteException {
         Collection<News> x = News.getNewsHashMap().values();
 
-        ((List<News>) x).sort( (o1, o2) -> o1.getDate().compareTo(o2.getDate()) );
+        ((List<News>) x).sort(Comparator.comparing(News::getDate));
 
         return new ArrayList<>(x);
     }
@@ -170,7 +170,7 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
         return topic.getNewsIDList()
             .stream()
             .map(News::getNewsFromID)
-            .sorted((o1, o2) -> o1.getDate().compareTo(o2.getDate()))
+            .sorted(Comparator.comparing(News::getDate))
             .collect(Collectors.toCollection(ArrayList::new));
     }
 
@@ -209,7 +209,7 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 
         // Caso estejam vazias levanta um exceção
         if (toSend.isEmpty())
-            throw new NotFoundOnServerException();
+            throw new NotFoundOnServerException(backupServerIP);
 
         // Retorna ArrayList com todas as notícias satisfatórias ao pedido.
         return toSend;

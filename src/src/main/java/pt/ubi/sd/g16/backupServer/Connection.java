@@ -16,7 +16,7 @@ import pt.ubi.sd.g16.shared.*;
 
 public class Connection extends Thread{
 
-    private ServerSocket S;
+    private final ServerSocket S;
 
     private ArrayList<News> news_list; // ArrayList com todas as notícias em backup
 
@@ -32,9 +32,8 @@ public class Connection extends Thread{
     }
 
     public void run(){
-        loadNews();
         Socket s;
-        while(true) {
+        while (true) {
             synchronized(S) {
                 try {
                     s = S.accept();
@@ -43,14 +42,17 @@ public class Connection extends Thread{
 
                     switch((int)is.readObject()) {
                         case 0: // chama o método getNews que devolve um ArrayList com todas as notícias em backup
+                            loadNews();
                             ArrayList<News> getNews = getNews();
                             os.writeObject(getNews);
                             break;
                         case 1: // chama o método seekTopic que devolve os IDs de todos os tópicos com noticias em arquivo
+                            loadNews();
                             ArrayList<String> seekTopic = seekTopics();
                             os.writeObject(seekTopic);
                             break;
                         case 2: // chama o método getNews_Topic que recebe uma string com o id do tópico das notícias que pretende observar e devolve o ArrayList com essas mesmas notícias dado o tópico
+                            loadNews();
                             String idTopic = (String)is.readObject();
                             ArrayList<News> getNewsTopic = getNews_Topic(idTopic);
                             os.writeObject(getNewsTopic);

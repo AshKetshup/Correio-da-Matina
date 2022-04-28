@@ -8,13 +8,15 @@ import java.nio.file.Paths;
 import java.util.Enumeration;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 
 public class BackupServerMain {
 
     public static void main(String[] args) throws IOException{
 
-        TestIP();
+        testIP();
         ServerSocket ss = null;
         Socket s;
         //final String pathConfig = "config.json";
@@ -31,17 +33,28 @@ public class BackupServerMain {
             System.out.println(e.getMessage());
         }
 
-        ExecutorService executor = Executors.newFixedThreadPool((int) (Runtime.getRuntime().availableProcessors()* (1 + 50 / 5)/0.1));
 
+        ExecutorService executor = Executors.newFixedThreadPool((int) (Runtime.getRuntime().availableProcessors() * (1 + 50 / 5)/0.1));
+        int i = 0;
         //all the threads
         //for(int i = 0; i < ; i++) {
-        while(true) {
-            Runnable worker = new Connection(ss);
-            executor.execute(worker);
+        try {
+            for (; ; ) {
+                i++;
+                Runnable worker = new Connection(ss);
+                // executor.execute(worker);
+                Future<?> future = executor.submit(worker);
+                future.get(60, TimeUnit.SECONDS);
+                // System.out.println("Execução: " + i);
+                // System.out.println(((ThreadPoolExecutor) executor).getActiveCount());
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            executor.shutdown();
         }
     }
 
-    public static void TestIP(){
+    public static void testIP(){
 
         try {
             Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
@@ -59,10 +72,4 @@ public class BackupServerMain {
             System.out.println(e.getMessage());
         }
     }
-
-
-
-
-
-
 }
