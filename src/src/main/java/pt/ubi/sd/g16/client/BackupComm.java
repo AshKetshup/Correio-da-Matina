@@ -22,7 +22,7 @@ public class BackupComm {
             arrayNews = (ArrayList<News>) is.readObject();
             is.close();
             s.close();
-        }catch (IOException | ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             System.out.println(e.getMessage());
         }
         return arrayNews;
@@ -30,7 +30,7 @@ public class BackupComm {
 
     public ArrayList<String> seekTopics(){ // Devolve a lista de tópicos (IDs) no servidor de backup
         ArrayList<String> arrayTopics = null;
-        try{
+        try {
             Socket s;
             s = new Socket("127.0.0.1", 1200);
             ObjectInputStream is = new ObjectInputStream(s.getInputStream());
@@ -40,28 +40,23 @@ public class BackupComm {
             arrayTopics = (ArrayList<String>) is.readObject();
             is.close();
             s.close();
-        }catch (IOException | ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             System.out.println(e.getMessage());
         }
         return arrayTopics;
     }
 
-    public ArrayList<News> getNews_Topic(String idTopic){ // Recebe o id do tópico desejado, devolve uma lista de todas as notícias nesse tópico
-        ArrayList<News> arrayNews = null;
-        try{
-            Socket s;
-            s = new Socket("127.0.0.1", 1200);
-            ObjectOutputStream os = new ObjectOutputStream(s.getOutputStream());
-            os.writeObject(2); // <- ReceiveNews(n) método
-            os.flush();
-            os.writeObject(idTopic); // <- String com id do tópico a enviar
-            ObjectInputStream is = new ObjectInputStream(s.getInputStream());
-            arrayNews = (ArrayList<News>) is.readObject();
-            is.close();
-            s.close();
-        }catch (IOException | ClassNotFoundException e) {
-            System.out.println(e.getMessage());
-        }
+    // Recebe o id do tópico desejado, devolve uma lista de todas as notícias nesse tópico
+    public ArrayList<News> getNews_Topic(String idTopic) throws IOException, ClassNotFoundException {
+        Socket s = new Socket("127.0.0.1", 1200);
+        ObjectOutputStream os = new ObjectOutputStream(s.getOutputStream());
+        os.writeObject(2); // <- ReceiveNews(n) método
+        os.flush();
+        os.writeObject(idTopic); // <- String com id do tópico a enviar
+        ObjectInputStream is = new ObjectInputStream(s.getInputStream());
+        ArrayList<News> arrayNews = (ArrayList<News>) is.readObject();
+        is.close();
+        s.close();
         return arrayNews;
     }
 }
