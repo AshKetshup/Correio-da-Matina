@@ -38,7 +38,7 @@ public class Settings {
         FileReader fr = new FileReader(file); // Lê uma string Gson e transfere o seu conteúdo para variáveis
         char[] chars = new char[(int) file.length()];
         fr.read(chars);
-        this.deserialize(Arrays.toString(chars));
+        this.deserialize(new String(chars));
     }
 
     public static Settings load() {

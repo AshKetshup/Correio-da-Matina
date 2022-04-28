@@ -106,7 +106,7 @@ public class News implements Serializable {
 		char[] content = new char[(int) file.length()];
 		fileReader.read(content);
 
-		new News(Arrays.toString(content));
+		new News(new String(content));
 	}
 
 	public static boolean load() throws FileNotFoundException {

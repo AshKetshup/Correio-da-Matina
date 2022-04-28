@@ -141,7 +141,7 @@ public class Account implements Serializable {
 		char[] content = new char[(int) file.length()];
 		fileReader.read(content);
 
-		return new Account(Arrays.toString(content));
+		return new Account(new String(content));
 	}
 
 	public static boolean load() throws FileNotFoundException {

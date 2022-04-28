@@ -87,7 +87,7 @@ public class Topic implements Serializable {
 		char[] content = new char[(int) file.length()];
 		fileReader.read(content);
 
-		new Topic(Arrays.toString(content));
+		new Topic(new String(content));
 	}
 
 	public static boolean load() throws FileNotFoundException {

@@ -436,7 +436,7 @@ public class ClientMain extends java.rmi.server.UnicastRemoteObject {
 
     private static Article generateLastNewsFromTopic(String topicID) throws IOException {
         News news = serverInterface.getLastNewsFromTopic(topicID);
-        String[] lines = Arrays.toString(news.getContent()).split("\n");
+        String[] lines = new String(news.getContent()).split("\n");
         List<StringStyler> stylers = Arrays
             .stream(lines)
             .map(StringStyler::new)
@@ -474,7 +474,7 @@ public class ClientMain extends java.rmi.server.UnicastRemoteObject {
                     x.toString(),
                     () -> screenManager.bindScreen(new Article(
                         x.getTitle(),
-                        Arrays.stream(Arrays.toString(x.getContent()).split("\n"))
+                        Arrays.stream(new String(x.getContent()).split("\n"))
                             .map(StringStyler::new)
                             .collect(Collectors.toList()),
                         screenManager
@@ -509,7 +509,7 @@ public class ClientMain extends java.rmi.server.UnicastRemoteObject {
                 x.toString(),
                 () -> screenManager.bindScreen(new Article(
                     x.getTitle(),
-                    Arrays.stream(Arrays.toString(x.getContent()).split("\n"))
+                    Arrays.stream(new String(x.getContent()).split("\n"))
                         .map(StringStyler::new)
                         .collect(Collectors.toList()),
                     screenManager
