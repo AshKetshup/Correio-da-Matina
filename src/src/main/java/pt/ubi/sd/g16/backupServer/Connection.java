@@ -16,7 +16,7 @@ import pt.ubi.sd.g16.shared.*;
 
 public class Connection extends Thread{
 
-    private ServerSocket S;
+    private final ServerSocket S;
 
     private ArrayList<News> news_list; // ArrayList com todas as notícias em backup
 
@@ -32,7 +32,6 @@ public class Connection extends Thread{
     }
 
     public void run(){
-        loadNews();
         Socket s;
         while(true) {
             synchronized(S) {
@@ -67,6 +66,7 @@ public class Connection extends Thread{
                     os.flush();
                     os.close();
                     is.close();
+
                 } catch (ClassNotFoundException | IOException e) {
                     e.printStackTrace();
                 }
@@ -75,11 +75,13 @@ public class Connection extends Thread{
     }
 
     public ArrayList<News> getNews() { // 0 - Envia a lista de notícias
+        loadNews();
         return news_list;
     }
 
 
     public ArrayList<String> seekTopics(){ // 1 - devolve os IDs de todos os tópicos com noticias em arquivo
+        loadNews();
         ArrayList<String> topics = new ArrayList<>();
         for(News n : news_list) {
             if(!topics.contains(n.getTopic().getId())) {
@@ -90,6 +92,7 @@ public class Connection extends Thread{
     }
 
     public ArrayList<News> getNews_Topic(String id_topic){ // 2 - devolve as noticias do topico pretendido
+        loadNews();
         ArrayList<News> newsList = new ArrayList<>();
         for(News n : news_list) {
             if(n.getTopic().getId().equals(id_topic)) {
