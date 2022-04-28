@@ -209,7 +209,7 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 
         // Caso estejam vazias levanta um exceção
         if (toSend.isEmpty())
-            throw new NotFoundOnServerException();
+            throw new NotFoundOnServerException(backupServerIP);
 
         // Retorna ArrayList com todas as notícias satisfatórias ao pedido.
         return toSend;
