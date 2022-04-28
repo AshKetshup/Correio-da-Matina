@@ -1,5 +1,8 @@
 package pt.ubi.sd.g16.shared;
 
+import pt.ubi.sd.g16.shared.Exceptions.PasswordNotMatchingException;
+import pt.ubi.sd.g16.shared.Exceptions.UsernameTakenException;
+
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.HashMap;
@@ -20,7 +23,4 @@ public class Publisher extends Account {
 
         return x;
     }
-
-
-
 }
