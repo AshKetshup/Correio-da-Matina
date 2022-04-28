@@ -10,11 +10,12 @@ import java.util.ArrayList;
 
 public class BackupComm {
 
-    public ArrayList<News> getNews() { // Devolve a lista de notícias no servidor de backup
+    public ArrayList<News> getNews(String ip) { // Devolve a lista de notícias no servidor de backup
+        String[] ip_split = ip.split(":");
         ArrayList<News> arrayNews = null;
         try {
             Socket s;
-            s = new Socket("127.0.0.1", 1200);
+            s = new Socket(ip_split[0], Integer.parseInt(ip_split[1]));
             ObjectInputStream is = new ObjectInputStream(s.getInputStream());
             ObjectOutputStream os = new ObjectOutputStream(s.getOutputStream());
             os.writeObject(0); // <- ReceiveNews(n) método
@@ -28,11 +29,12 @@ public class BackupComm {
         return arrayNews;
     }
 
-    public ArrayList<String> seekTopics(){ // Devolve a lista de tópicos (IDs) no servidor de backup
+    public ArrayList<String> seekTopics(String ip){ // Devolve a lista de tópicos (IDs) no servidor de backup
+        String[] ip_split = ip.split(":");
         ArrayList<String> arrayTopics = null;
         try {
             Socket s;
-            s = new Socket("127.0.0.1", 1200);
+            s = new Socket(ip_split[0], Integer.parseInt(ip_split[1]));
             ObjectInputStream is = new ObjectInputStream(s.getInputStream());
             ObjectOutputStream os = new ObjectOutputStream(s.getOutputStream());
             os.writeObject(1); // <- ReceiveNews(n) método
@@ -46,17 +48,23 @@ public class BackupComm {
         return arrayTopics;
     }
 
-    // Recebe o id do tópico desejado, devolve uma lista de todas as notícias nesse tópico
-    public ArrayList<News> getNews_Topic(String idTopic) throws IOException, ClassNotFoundException {
-        Socket s = new Socket("127.0.0.1", 1200);
-        ObjectOutputStream os = new ObjectOutputStream(s.getOutputStream());
-        os.writeObject(2); // <- ReceiveNews(n) método
-        os.flush();
-        os.writeObject(idTopic); // <- String com id do tópico a enviar
-        ObjectInputStream is = new ObjectInputStream(s.getInputStream());
-        ArrayList<News> arrayNews = (ArrayList<News>) is.readObject();
-        is.close();
-        s.close();
+    public ArrayList<News> getNews_Topic(String ip, String idTopic){ // Recebe o id do tópico desejado, devolve uma lista de todas as notícias nesse tópico
+        String[] ip_split = ip.split(":");
+        ArrayList<News> arrayNews = null;
+        try{
+            Socket s;
+            s = new Socket(ip_split[0], Integer.parseInt(ip_split[1]));
+            ObjectOutputStream os = new ObjectOutputStream(s.getOutputStream());
+            os.writeObject(2); // <- ReceiveNews(n) método
+            os.flush();
+            os.writeObject(idTopic); // <- String com id do tópico a enviar
+            ObjectInputStream is = new ObjectInputStream(s.getInputStream());
+            arrayNews = (ArrayList<News>) is.readObject();
+            is.close();
+            s.close();
+        }catch (IOException | ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
         return arrayNews;
     }
 }

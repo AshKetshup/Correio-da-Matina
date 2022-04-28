@@ -1,15 +1,11 @@
 package pt.ubi.sd.g16.backupServer;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -17,6 +13,8 @@ import java.util.concurrent.Executors;
 public class BackupServerMain {
 
     public static void main(String[] args) throws IOException{
+
+        TestIP();
         ServerSocket ss = null;
         Socket s;
         //final String pathConfig = "config.json";
@@ -40,6 +38,25 @@ public class BackupServerMain {
         while(true) {
             Runnable worker = new Connection(ss);
             executor.execute(worker);
+        }
+    }
+
+    public static void TestIP(){
+
+        try {
+            Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
+            while(e.hasMoreElements())
+            {
+                NetworkInterface n = e.nextElement();
+                Enumeration<InetAddress> ee = n.getInetAddresses();
+                while (ee.hasMoreElements())
+                {
+                    InetAddress i = ee.nextElement();
+                    System.out.println(i.getHostAddress());
+                }
+            }
+        } catch (SocketException e) {
+            System.out.println(e.getMessage());
         }
     }
 
