@@ -3,6 +3,8 @@ package pt.ubi.sd.g16.client;
 import com.ashketshup.Landmark.Screens.Article;
 import com.ashketshup.Landmark.Screens.Form;
 import com.ashketshup.Landmark.Screens.Menu;
+import com.ashketshup.Landmark.TUI.Input;
+import com.ashketshup.Landmark.TUI.Output;
 import com.ashketshup.Landmark.TUI.StringStyler;
 import com.ashketshup.Landmark.UIElements.Command;
 import com.ashketshup.Landmark.UIElements.Component;
@@ -18,7 +20,11 @@ import pt.ubi.sd.g16.shared.Publisher;
 import pt.ubi.sd.g16.shared.Subscriber;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.MalformedURLException;
 import java.rmi.*;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,10 +36,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ClientMain extends java.rmi.server.UnicastRemoteObject {
-    private static ServerInterface si;
+    private static ServerInterface serverInterface;
     private static ScreenManager screenManager;
-    static Session session;
-
+    private static Session session;
+    private static String serverName = "";
 
     public ClientMain() throws RemoteException {
         super();
@@ -47,10 +53,23 @@ public class ClientMain extends java.rmi.server.UnicastRemoteObject {
 
         screenManager.bindScreen(screenManager.getMenu("welcome_menu"));
 
+        if (args.length == 0) {
+            try {
+                serverName = Input.readString("Please insert server domain or IP (Empty for localhost):");
+                if (serverName.isEmpty())
+                    serverName = InetAddress.getLocalHost().getHostName();
+            } catch (java.net.UnknownHostException e) {
+                Output.writeln(e.getMessage());
+            }
+        } else
+            serverName = args[0];
+
         System.setSecurityManager(new SecurityManager());
+
         try {
-            si = (ServerInterface) Naming.lookup("CorreioDaMatina");
-        } catch( java.rmi.NotBoundException | java.net.MalformedURLException | java.rmi.RemoteException e ) {
+            Registry registry = LocateRegistry.getRegistry(serverName, 1099);
+            serverInterface = (ServerInterface) registry.lookup("CorreioDaMatina");
+        } catch(NotBoundException | RemoteException e ) {
             System.out.println("Exception in client" + e.getMessage());
 
             System.exit(1);
@@ -79,7 +98,7 @@ public class ClientMain extends java.rmi.server.UnicastRemoteObject {
                             session = new Session(
                                 componentList.get(0).getAnswer(),
                                 componentList.get(1).getAnswer(),
-                                si
+                                serverInterface
                             );
                         } catch (NoSuchAlgorithmException | RemoteException | WrongPasswordException e) {
                             Notifications.createCritical(e.getMessage());
@@ -120,7 +139,7 @@ public class ClientMain extends java.rmi.server.UnicastRemoteObject {
                         Notifications.createWarning("Required camps are not filled.");
                     } else {
                         try {
-                            si.createAccount(
+                            serverInterface.createAccount(
                                 componentList.get(1).getAnswer(),
                                 componentList.get(1).getAnswer(),
                                 componentList.get(1).getAnswer(),
@@ -212,7 +231,26 @@ public class ClientMain extends java.rmi.server.UnicastRemoteObject {
                     } catch (ParseException e) {
                         Notifications.createWarning("Given date doesn't correspond to the asked format [dd/MM/yyyy]");
                     } catch (NotFoundOnServerException e) {
-                        Notifications.createWarning("Given topicID doesn't exist on the server");
+                        Notifications.createTip(
+                            "Weren't found any News from this time period on our main server. So we tried on the Backup."
+                        );
+
+                        try {
+                            screenManager.bindScreen(
+                                generateMenuNews(
+                                    componentList.get(0).getAnswer(),
+                                    componentList.get(1).getAnswer(),
+                                    componentList.get(2).getAnswer(),
+                                    e.getIp()
+                                )
+                            );
+                        } catch (ParseException ex) {
+                            Notifications.createWarning("Given date doesn't correspond to the asked format [dd/MM/yyyy]");
+                        } catch (NotFoundOnServerException ex) {
+                            Notifications.createWarning("There are no News from the given Date interval");
+                        } catch (IOException | ClassNotFoundException ex) {
+                            Notifications.createCritical(ex.getMessage());
+                        }
                     } catch (RemoteException e) {
                         Notifications.createCritical(e.getMessage());
                     }
@@ -249,8 +287,8 @@ public class ClientMain extends java.rmi.server.UnicastRemoteObject {
                         Notifications.createWarning("Required camps are not filled.");
                     } else {
                         try {
-                            si.addTopic(
-                                si.createTopic(
+                            serverInterface.addTopic(
+                                serverInterface.createTopic(
                                     componentList.get(0).getAnswer(),
                                     componentList.get(1).getAnswer(),
                                     componentList.get(2).getAnswer()
@@ -297,8 +335,8 @@ public class ClientMain extends java.rmi.server.UnicastRemoteObject {
                         Notifications.createWarning("Required camps are not filled.");
                     } else {
                         try {
-                            si.addNews(
-                                si.createNews(
+                            serverInterface.addNews(
+                                serverInterface.createNews(
                                     componentList.get(0).getAnswer(),
                                     componentList.get(1).getAnswer().toCharArray(),
                                     componentList.get(2).getAnswer(),
@@ -338,7 +376,7 @@ public class ClientMain extends java.rmi.server.UnicastRemoteObject {
 
                     String topicID = componentList.get(0).getAnswer();
                     try {
-                        Subscriber subscriber = (Subscriber) si.getAccountFromID(session.getSessionAccount().getID());
+                        Subscriber subscriber = (Subscriber) serverInterface.getAccountFromID(session.getSessionAccount().getID());
                         subscriber.subscribeTopic(topicID);
 
                         Notifications.createValid("Topic '"+ topicID +"' subscribed ");
@@ -359,11 +397,11 @@ public class ClientMain extends java.rmi.server.UnicastRemoteObject {
                 Arrays.asList(
                     new Option(
                         "Consult News",
-                        () -> { screenManager.bindScreen(screenManager.getForm("consult_news_form")); }
+                        () -> screenManager.bindScreen(screenManager.getForm("consult_news_form"))
                     ),
                     new Option(
                         "Consult Last News from a Topic",
-                        () -> { screenManager.bindScreen(screenManager.getForm("consult_last_from_topic_form")); }
+                        () -> screenManager.bindScreen(screenManager.getForm("consult_last_from_topic_form"))
                     )
                 ),
                 screenManager
@@ -379,15 +417,15 @@ public class ClientMain extends java.rmi.server.UnicastRemoteObject {
                 Arrays.asList(
                     new Option(
                         "Login",
-                        () -> { screenManager.bindScreen(screenManager.getForm("login_form")); }
+                        () -> screenManager.bindScreen(screenManager.getForm("login_form"))
                     ),
                     new Option(
                         "Register",
-                        () -> { screenManager.bindScreen(screenManager.getForm("register_form")); }
+                        () -> screenManager.bindScreen(screenManager.getForm("register_form"))
                     ),
                     new Option(
                         "Continue as Guest",
-                        () -> { screenManager.bindScreen(screenManager.getForm("guest_menu")); }
+                        () -> screenManager.bindScreen(screenManager.getForm("guest_menu"))
                     )
                 ),
                 screenManager
@@ -397,7 +435,7 @@ public class ClientMain extends java.rmi.server.UnicastRemoteObject {
     }
 
     private static Article generateLastNewsFromTopic(String topicID) throws IOException {
-        News news = si.getLastNewsFromTopic(topicID);
+        News news = serverInterface.getLastNewsFromTopic(topicID);
         String[] lines = Arrays.toString(news.getContent()).split("\n");
         List<StringStyler> stylers = Arrays
             .stream(lines)
@@ -408,8 +446,8 @@ public class ClientMain extends java.rmi.server.UnicastRemoteObject {
     }
 
     private static Menu generateAllTopics() throws RemoteException {
-        List<Option> topicList = si.getAllTopics().stream().map(
-            x -> { return new Option(x.getId() + "\t" + x.getTitle() + "\t" + x.getDescription()); }
+        List<Option> topicList = serverInterface.getAllTopics().stream().map(
+            x -> new Option(x.getId() + "\t" + x.getTitle() + "\t" + x.getDescription())
         ).collect(Collectors.toList());
 
         return new Menu(
@@ -431,22 +469,52 @@ public class ClientMain extends java.rmi.server.UnicastRemoteObject {
             : Date.from(Instant.now());
 
         List<Option> optionList =
-            ((!topicID.equals("")) ? si.getNewsInsideTimeInterval(topicID, sDate, eDate) : si.getAllNews())
-                .stream().map(x -> {
-                return new Option(
+            ((!topicID.equals("")) ? serverInterface.getNewsInsideTimeInterval(topicID, sDate, eDate) : serverInterface.getAllNews())
+                .stream().map(x -> new Option(
                     x.toString(),
-                    () -> {
-                        screenManager.bindScreen(new Article(
-                            x.getTitle(),
-                            Arrays.stream(Arrays.toString(x.getContent()).split("\n"))
-                                .map(StringStyler::new)
-                                .collect(Collectors.toList()),
-                            screenManager
-                        ));
-                    }
-                );
-            }).collect(Collectors.toList());
+                    () -> screenManager.bindScreen(new Article(
+                        x.getTitle(),
+                        Arrays.stream(Arrays.toString(x.getContent()).split("\n"))
+                            .map(StringStyler::new)
+                            .collect(Collectors.toList()),
+                        screenManager
+                    ))
+                )).collect(Collectors.toList());
 
+
+        return new Menu(
+            "Consult all Menus",
+            optionList,
+            screenManager
+        );
+    }
+
+    private static Menu generateMenuNews(String startDate, String endDate, String topicID, String ip) throws ParseException, IOException, NotFoundOnServerException, ClassNotFoundException {
+        Date sDate, eDate;
+
+        sDate = (!startDate.equals(""))
+            ? new SimpleDateFormat("dd/MM/yyyy").parse(startDate)
+            : Date.from(Instant.EPOCH);
+
+        eDate = (!endDate.equals(""))
+            ? new SimpleDateFormat("dd/MM/yyyy").parse(endDate)
+            : Date.from(Instant.now());
+
+        List<News> newsList =
+            ((!topicID.equals("")) ? BackupComm.getNewsTopic(ip, topicID) : BackupComm.getNews(ip))
+                .stream().filter(x -> x.getDate().after(sDate) && x.getDate().before(eDate)).collect(Collectors.toList());
+
+        List<Option> optionList =
+            (newsList).stream().map(x -> new Option(
+                x.toString(),
+                () -> screenManager.bindScreen(new Article(
+                    x.getTitle(),
+                    Arrays.stream(Arrays.toString(x.getContent()).split("\n"))
+                        .map(StringStyler::new)
+                        .collect(Collectors.toList()),
+                    screenManager
+                ))
+            )).collect(Collectors.toList());
 
         return new Menu(
             "Consult all Menus",
@@ -459,12 +527,14 @@ public class ClientMain extends java.rmi.server.UnicastRemoteObject {
         return new Menu(
             "Welcome" + username + "!",
             List.of(
-                new Option("Create Topic", () -> {
-                    screenManager.bindScreen(screenManager.getForm("create_topic_form"));
-                }),
-                new Option("Create News", () -> {
-                    screenManager.bindScreen(screenManager.getForm("create_news_form"));
-                }),
+                new Option(
+                    "Create Topic",
+                    () -> screenManager.bindScreen(screenManager.getForm("create_topic_form"))
+                ),
+                new Option(
+                    "Create News",
+                    () -> screenManager.bindScreen(screenManager.getForm("create_news_form"))
+                ),
                 new Option("Consult Topics", () -> {
                     try {
                         screenManager.bindScreen(generateAllTopics());
@@ -472,9 +542,10 @@ public class ClientMain extends java.rmi.server.UnicastRemoteObject {
                         Notifications.createCritical(e.getMessage());
                     }
                 }),
-                new Option("Consult News", () -> {
-                    screenManager.bindScreen(screenManager.getForm("consult_news_form"));
-                })
+                new Option(
+                    "Consult News",
+                    () -> screenManager.bindScreen(screenManager.getForm("consult_news_form"))
+                )
             ),
             screenManager
         );
@@ -484,15 +555,18 @@ public class ClientMain extends java.rmi.server.UnicastRemoteObject {
         return new Menu(
             "Welcome" + username + "!",
             List.of(
-                new Option("Subscribe Topic", () -> {
-                    screenManager.bindScreen(screenManager.getForm("subscribe_topic_form"));
-                }),
-                new Option("Consult News", () -> {
-                    screenManager.bindScreen(screenManager.getForm("consult_news_form"));
-                }),
-                new Option("Consult Most Recent Topics", () -> {
-                    screenManager.bindScreen(screenManager.getForm("consult_last_from_topic_form"));
-                })
+                new Option(
+                    "Subscribe Topic",
+                    () -> screenManager.bindScreen(screenManager.getForm("subscribe_topic_form"))
+                ),
+                new Option(
+                    "Consult News",
+                    () -> screenManager.bindScreen(screenManager.getForm("consult_news_form"))
+                ),
+                new Option(
+                    "Consult Most Recent Topics",
+                    () -> screenManager.bindScreen(screenManager.getForm("consult_last_from_topic_form"))
+                )
             ),
             screenManager
         );

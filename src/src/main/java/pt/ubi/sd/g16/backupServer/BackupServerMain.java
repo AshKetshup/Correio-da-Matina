@@ -6,14 +6,17 @@ import java.net.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Enumeration;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 
 public class BackupServerMain {
 
     public static void main(String[] args) throws IOException {
 
-        TestIP();
+        testIP();
         ServerSocket ss = null;
         Socket s;
         //final String pathConfig = "config.json";
@@ -29,11 +32,12 @@ public class BackupServerMain {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-        ExecutorService executor = Executors.newFixedThreadPool(100);
+
+
+        ExecutorService executor = Executors.newFixedThreadPool((int) (Runtime.getRuntime().availableProcessors() * (1 + 50 / 5)/0.1));
         int i = 0;
         //all the threads
         //for(int i = 0; i < ; i++) {
-
         try {
             for (; ; ) {
                 i++;
@@ -50,7 +54,7 @@ public class BackupServerMain {
         }
     }
 
-    public static void TestIP(){
+    public static void testIP(){
 
         try {
             Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
