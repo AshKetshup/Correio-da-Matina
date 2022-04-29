@@ -8,13 +8,14 @@ import java.rmi.RemoteException;
 import java.security.NoSuchAlgorithmException;
 
 public class Session {
-    private final Account sessionAccount;
+    private static Account sessionAccount;
 
-    public Session(String username, String password, ServerInterface serverInterface) throws NoSuchAlgorithmException, RemoteException, WrongPasswordException {
-        sessionAccount = serverInterface.login(username, password);
+    public static Account getSessionAccount() {
+        return sessionAccount;
     }
 
-    public Account getSessionAccount() {
-        return sessionAccount;
+    public static void setSessionAccount(String username, String password, ServerInterface serverInterface)
+            throws NoSuchAlgorithmException, RemoteException, WrongPasswordException {
+        sessionAccount = serverInterface.login(username, password);
     }
 }

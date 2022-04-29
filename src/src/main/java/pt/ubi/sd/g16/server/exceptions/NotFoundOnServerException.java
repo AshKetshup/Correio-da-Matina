@@ -9,6 +9,12 @@ public class NotFoundOnServerException extends Exception {
         this.ip = ip;
     }
 
+    public NotFoundOnServerException() {
+        super("Not found on Server");
+
+        this.ip = null;
+    }
+
     public String getIp() {
         return ip;
     }
