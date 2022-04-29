@@ -76,9 +76,11 @@ public class ConsultNewsForm {
                 // Commando para ver quais os topicos disponives
                 new Command(":ct", "Check Topics", () -> {
                     try {
-                        screenManager.bindScreen(AllTopicsMenu.generate(screenManager, serverInterface));
+                        screenManager.bindScreen(AllTopicsArticle.generate(screenManager, serverInterface));
                     } catch (RemoteException e) {
                         Notifications.createCritical(e.getMessage());
+                    } catch (IndexOutOfBoundsException e) {
+                        Notifications.createWarning("There are no topics on the server.");
                     }
                 })
             ),

@@ -25,10 +25,6 @@ public class ClientMain extends java.rmi.server.UnicastRemoteObject {
         screenManager = new ScreenManager();
         Navigation nav = new Navigation(screenManager, 10);
 
-        declareScreens();
-
-        screenManager.bindScreen(screenManager.getMenu("welcome_menu"));
-
         if (args.length == 0) {
             try {
                 serverName = Input.readString("Please insert server domain or IP (Empty for localhost):");
@@ -50,6 +46,14 @@ public class ClientMain extends java.rmi.server.UnicastRemoteObject {
 
             System.exit(1);
         }
+
+        Thread notif = new Thread(new NotificationThread(serverInterface));
+        if(!notif.isAlive())
+            notif.start();
+
+        declareScreens();
+
+        screenManager.bindScreen(screenManager.getMenu("welcome_menu"));
 
         nav.loop();
     }

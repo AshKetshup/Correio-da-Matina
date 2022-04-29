@@ -19,15 +19,15 @@ public class Topic implements Serializable {
     private String description;
     private final ArrayList<UUID> newsIDList = new ArrayList<>();
 
-    public Topic(String id, String title, String description) throws TopicIDTakenException {
+    public Topic(String id, String title, String description) throws TopicIDTakenException, IOException {
         if (Topic.isIDUsed(id))
 			throw new TopicIDTakenException();
 
         this.id = id;
         this.title = title;
         this.description = description;
-
         TOPIC_HASH_MAP.put(id, this);
+        this.save();
     }
 
     public Topic(String jsonLine) {

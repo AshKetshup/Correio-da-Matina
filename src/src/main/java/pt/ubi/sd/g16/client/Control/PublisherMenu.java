@@ -24,7 +24,7 @@ public class PublisherMenu {
 
     private static void consultTopics() {
         try {
-            screenManager.bindScreen(AllTopicsMenu.generate(screenManager, serverInterface));
+            screenManager.bindScreen(AllTopicsArticle.generate(screenManager, serverInterface));
         } catch (RemoteException e) {
             Notifications.createCritical(e.getMessage());
         }
@@ -39,7 +39,7 @@ public class PublisherMenu {
         PublisherMenu.serverInterface = serverInterface;
 
         return new Menu(
-            "Welcome" + Session.getSessionAccount().getID() + "!",
+            "Welcome " + Session.getSessionAccount().getID() + "!",
             List.of(
                 new Option("Create Topic", PublisherMenu::createTopic),
                 new Option("Create News", PublisherMenu::createNews),

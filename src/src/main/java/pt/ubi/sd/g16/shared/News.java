@@ -21,20 +21,20 @@ public class News implements Serializable {
 	private final String title;
     private final char[] content = new char[180];
 	private final Topic topic;
-	private final Publisher publisher;
+	private final String publisherID;
 	private Date date;
 	private final static String datePattern = "dd-mm-yyyy hh:mm:ss";
 
-	public News(String title, char[] content, String topicID, Publisher publisher) throws NullPointerException, ArrayIndexOutOfBoundsException {
+	public News(String title, char[] content, String topicID, Publisher publisher) throws NullPointerException, ArrayIndexOutOfBoundsException, IOException {
 		this.date = new Date();
 		this.id = UUID.randomUUID();
 
 		this.title = title;
 		setContent(content);
 		this.topic = Topic.getTopicFromID(topicID);
-		this.publisher = publisher;
-
+		this.publisherID = publisher.getID();
 		NEWS_HASH_MAP.put(id, this);
+		this.save();
 	}
 
 	public News(String jsonLine) throws JsonSyntaxException {
@@ -44,7 +44,7 @@ public class News implements Serializable {
 		this.title = x.getTitle();
 		setContent(x.getContent());
 		this.topic = x.getTopic();
-		this.publisher = x.getPublisher();
+		this.publisherID = x.getPublisherID();
 		this.date = x.getDate();
 
 		NEWS_HASH_MAP.put(this.id, this);
@@ -58,8 +58,8 @@ public class News implements Serializable {
 		return date;
 	}
 
-	public Publisher getPublisher() {
-		return publisher;
+	public String getPublisherID() {
+		return publisherID;
 	}
 
 	public Topic getTopic() {
@@ -79,8 +79,9 @@ public class News implements Serializable {
 	}
 
 	public void setContent(char[] newContent) throws ArrayIndexOutOfBoundsException {
-		for (int i = 0; i < newContent.length; i++)
+		for (int i = 0; i < newContent.length; i++){
 			this.content[i] = newContent[i];
+		}
 	}
 
 	public String getNewsDate() {
@@ -95,7 +96,7 @@ public class News implements Serializable {
 	public String toString() {
 		String stringTitle = ((title.length() > 30) ? title.substring(0, 30) : title);
 		String stringTopic = ((topic.getTitle().length() > 15) ? topic.getTitle().substring(0, 15) : topic.getTitle());
-		String stringPublisher = ((publisher.getID().length() > 10) ? publisher.getID().substring(0, 10) : publisher.getID());
+		String stringPublisher = ((publisherID.length() > 10) ? publisherID.substring(0, 10) : publisherID);
 
 		return id.toString() + "\t" + stringTitle + "\t" + stringTopic + "\t" + stringPublisher + "\t" + getNewsDate();
 	}
@@ -158,9 +159,8 @@ public class News implements Serializable {
 	public static News popFromID(UUID newsID) throws FailedDeleteException {
         // Guardar numa variavel a Noticia vinda do ID
         News toPop = getNewsFromID(newsID);
-
 		// Tentar apagar dos publishers || topicos || ficheiros
-		if (!toPop.publisher.deleteNewsID(newsID) || !toPop.topic.deleteNewsID(newsID) || !toPop.delNewsFile())
+		if (!Publisher.getPublisherFromID(toPop.getPublisherID()).deleteNewsID(newsID) || !toPop.topic.deleteNewsID(newsID) || !toPop.delNewsFile())
 			throw new FailedDeleteException();
 
 		// Apagar do registo da HashMap

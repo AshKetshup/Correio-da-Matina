@@ -20,7 +20,7 @@ public class WelcomeMenu {
     }
 
     private static void continueAsGuest() {
-        screenManager.bindScreen(screenManager.getForm("guest_menu"));
+        screenManager.bindScreen(screenManager.getMenu("guest_menu"));
     }
 
     public static Menu generate(ScreenManager screenManager, ServerInterface serverInterface) {

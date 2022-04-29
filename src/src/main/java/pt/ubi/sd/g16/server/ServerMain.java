@@ -2,6 +2,7 @@ package pt.ubi.sd.g16.server;
 
 import com.ashketshup.Landmark.TUI.Input;
 import com.ashketshup.Landmark.TUI.Output;
+import pt.ubi.sd.g16.shared.FileManager;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -22,6 +23,8 @@ public class ServerMain extends UnicastRemoteObject {
     }
 
     public static void main(String[] args) {
+
+        System.out.println(FileManager.PATH_DATA);
 
         System.setSecurityManager(new SecurityManager());
 

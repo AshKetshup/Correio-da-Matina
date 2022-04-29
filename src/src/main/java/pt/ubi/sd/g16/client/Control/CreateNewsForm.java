@@ -57,7 +57,7 @@ public class CreateNewsForm {
                 // Commando para ver quais os topicos disponives
                 new Command(":ct", "Check Topics", () -> {
                     try {
-                        screenManager.bindScreen(AllTopicsMenu.generate(screenManager, serverInterface));
+                        screenManager.bindScreen(AllTopicsArticle.generate(screenManager, serverInterface));
                     } catch (RemoteException e) {
                         Notifications.createCritical(e.getMessage());
                     }

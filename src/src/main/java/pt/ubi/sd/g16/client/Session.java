@@ -2,6 +2,7 @@ package pt.ubi.sd.g16.client;
 
 import pt.ubi.sd.g16.server.ServerInterface;
 import pt.ubi.sd.g16.shared.Account;
+import pt.ubi.sd.g16.shared.Exceptions.AccountNotFoundException;
 import pt.ubi.sd.g16.shared.Exceptions.WrongPasswordException;
 
 import java.rmi.RemoteException;
@@ -15,7 +16,7 @@ public class Session {
     }
 
     public static void setSessionAccount(String username, String password, ServerInterface serverInterface)
-            throws NoSuchAlgorithmException, RemoteException, WrongPasswordException {
+            throws NoSuchAlgorithmException, RemoteException, WrongPasswordException, AccountNotFoundException {
         sessionAccount = serverInterface.login(username, password);
     }
 }

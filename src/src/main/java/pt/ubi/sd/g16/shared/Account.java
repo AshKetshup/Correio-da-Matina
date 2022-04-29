@@ -2,6 +2,7 @@ package pt.ubi.sd.g16.shared;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import pt.ubi.sd.g16.shared.Exceptions.AccountNotFoundException;
 import pt.ubi.sd.g16.shared.Exceptions.PasswordNotMatchingException;
 import pt.ubi.sd.g16.shared.Exceptions.UsernameTakenException;
 import pt.ubi.sd.g16.shared.Exceptions.WrongPasswordException;
@@ -32,7 +33,7 @@ public class Account implements Serializable {
 	private final ArrayList<String> notificationsList = new ArrayList<>();
 
 	public Account(String username, String password, String passwordConfirm, int rank)
-		throws PasswordNotMatchingException, NoSuchAlgorithmException, UsernameTakenException {
+			throws PasswordNotMatchingException, NoSuchAlgorithmException, UsernameTakenException, IOException {
         if (!password.equals(passwordConfirm))
             throw new PasswordNotMatchingException();
 
@@ -43,8 +44,8 @@ public class Account implements Serializable {
 		this.rank = rank;
         this.salt = getNextSalt();
 		this.saltedPassword = securePassword(password, salt);
-
 		Account.ACCOUNT_HASH_MAP.put(this.id, this);
+		this.save();
     }
 
 	public Account(String jsonLine) throws JsonSyntaxException {
@@ -104,7 +105,7 @@ public class Account implements Serializable {
     }
 
 	public boolean deleteNewsID(UUID newsID) {
-		return newsIDList.remove(newsID);
+		return this.newsIDList.remove(newsID);
 	}
 
 	private static boolean isUsernameUsed(String username) {
@@ -117,16 +118,14 @@ public class Account implements Serializable {
 		return salt;
 	}
 
-	public static Account getAccountFromID(String accountID) throws NullPointerException {
-        Account x = ACCOUNT_HASH_MAP.get(accountID);
+	public static Account getAccountFromID(String accountID) throws AccountNotFoundException {
+		if (!ACCOUNT_HASH_MAP.containsKey(accountID))
+			throw new AccountNotFoundException();
 
-        if (x == null)
-            throw new NullPointerException();
-
-        return x;
+		return ACCOUNT_HASH_MAP.get(accountID);
     }
 
-	public static Account login(String username, String password) throws NoSuchAlgorithmException, WrongPasswordException {
+	public static Account login(String username, String password) throws NoSuchAlgorithmException, WrongPasswordException, AccountNotFoundException {
 		Account x = getAccountFromID(username);
 
 		if (!x.saltedPassword.equals(securePassword(password, x.getSalt())))
@@ -141,10 +140,15 @@ public class Account implements Serializable {
 		char[] content = new char[(int) file.length()];
 		fileReader.read(content);
 
-		return new Account(new String(content));
+		String jsonLine = new String(content);
+		Account x = new Gson().fromJson(jsonLine, Account.class);
+
+		if (x.getRank() == 1)
+			return new Publisher(jsonLine);
+		return new Subscriber(jsonLine);
 	}
 
-	public static boolean load() throws FileNotFoundException {
+	public static boolean load() {
 		File folder = new File(PATH_USERS);
 		File[] listOfFiles = folder.listFiles();
 
@@ -166,7 +170,7 @@ public class Account implements Serializable {
 	}
 
 	public void save() throws IOException {
-		File fileDir = new File(PATH_NEWS);
+		File fileDir = new File(PATH_USERS);
 		String fileName = this.id + ".json";
 		File file = new File(fileDir, fileName);
 

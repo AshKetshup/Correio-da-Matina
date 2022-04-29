@@ -4,11 +4,12 @@ import com.google.gson.JsonSyntaxException;
 import pt.ubi.sd.g16.shared.Exceptions.PasswordNotMatchingException;
 import pt.ubi.sd.g16.shared.Exceptions.UsernameTakenException;
 
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
 public class Subscriber extends Account {
     public Subscriber(String username, String password, String passwordConfirm, int rank)
-            throws PasswordNotMatchingException, NoSuchAlgorithmException, UsernameTakenException {
+            throws PasswordNotMatchingException, NoSuchAlgorithmException, UsernameTakenException, IOException {
         super(username, password, passwordConfirm, rank);
     }
 

@@ -8,8 +8,10 @@ import pt.ubi.sd.g16.server.ServerInterface;
 import pt.ubi.sd.g16.shared.Exceptions.PasswordNotMatchingException;
 import pt.ubi.sd.g16.shared.Exceptions.UsernameTakenException;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -34,12 +36,14 @@ public class RegisterForm {
                     )
                 );
 
-                Notifications.createValid("Account '"+ componentList.get(0).getAnswer() +"' created");
+                Notifications.createValid("Account '"+ componentList.get(1).getAnswer() +"' created");
                 screenManager.unbindLastScreen();
             } catch (PasswordNotMatchingException | UsernameTakenException e) {
                 Notifications.createWarning(e.getMessage());
             } catch (NoSuchAlgorithmException | RemoteException e) {
                 Notifications.createCritical(e.getMessage());
+            } catch (IOException | NoSuchProviderException e) {
+                throw new RuntimeException(e);
             }
         }
     }

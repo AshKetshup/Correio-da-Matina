@@ -27,7 +27,7 @@ public class BackupServerMain {
         Files.createDirectories((Paths.get(pathNews))); // Cria pasta data/news
 
         try {
-            ss = new ServerSocket(5432);
+            ss = new ServerSocket(1200);
 
         } catch (IOException e) {
             System.out.println(e.getMessage());

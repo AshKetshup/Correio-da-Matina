@@ -6,6 +6,7 @@ import com.ashketshup.Landmark.TUI.Notifications;
 import com.ashketshup.Landmark.UIElements.Component;
 import pt.ubi.sd.g16.client.Session;
 import pt.ubi.sd.g16.server.ServerInterface;
+import pt.ubi.sd.g16.shared.Exceptions.AccountNotFoundException;
 import pt.ubi.sd.g16.shared.Exceptions.WrongPasswordException;
 
 import java.rmi.RemoteException;
@@ -30,20 +31,23 @@ public class LoginForm {
                     componentList.get(1).getAnswer(),
                     serverInterface
                 );
+
+                String username = Session.getSessionAccount().getID();
+                int rank = Session.getSessionAccount().getRank();
+                switch (rank) {
+                    case 0:
+                        screenManager.bindScreen(SubscriberMenu.generate(screenManager, serverInterface));
+                        break;
+                    case 1:
+                        screenManager.bindScreen(PublisherMenu.generate(screenManager, serverInterface));
+                        break;
+                }
             } catch (NoSuchAlgorithmException | RemoteException | WrongPasswordException e) {
                 Notifications.createCritical(e.getMessage());
+            } catch (AccountNotFoundException e) {
+                Notifications.createWarning(e.getMessage());
             }
 
-            String username = Session.getSessionAccount().getID();
-            int rank = Session.getSessionAccount().getRank();
-            switch (rank) {
-                case 0:
-                    screenManager.bindScreen(SubscriberMenu.generate(screenManager, serverInterface));
-                    break;
-                case 1:
-                    screenManager.bindScreen(PublisherMenu.generate(screenManager, serverInterface));
-                    break;
-            }
         }
     }
 

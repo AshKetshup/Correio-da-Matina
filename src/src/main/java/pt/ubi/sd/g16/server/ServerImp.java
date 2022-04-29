@@ -7,10 +7,12 @@ import java.nio.file.Paths;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.util.Date;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import pt.ubi.sd.g16.client.Control.PublisherMenu;
 import pt.ubi.sd.g16.server.exceptions.NotFoundOnServerException;
 
 import pt.ubi.sd.g16.shared.*;
@@ -43,7 +45,7 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 		limit_topic = config.getLimit_topics(); // Actualiza os valores das configs.
 	}
 
-    public ArrayList<String> checkForNotifications(UUID idUser) throws IOException {
+    public ArrayList<String> checkForNotifications(String idUser) throws IOException {
 			String filename = idUser + ".json";
             File file = new File(new File(PATH_USERS), filename);
 
@@ -80,7 +82,7 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 	}
 
     // region Login
-	public Account login(String username, String password) throws RemoteException, NoSuchAlgorithmException, WrongPasswordException {
+	public Account login(String username, String password) throws RemoteException, NoSuchAlgorithmException, WrongPasswordException, AccountNotFoundException {
         return Account.login(username, password);
 	}
     // endregion
@@ -95,8 +97,12 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 		// Actualiza o ficheiro notícia
 		news.save();
 
+        Publisher pub = Publisher.getPublisherFromID(news.getPublisherID());
 		Topic topicAux = Topic.getTopicFromID(news.getTopic().getId());
 		topicAux.addNews(news);
+        pub.getNewsIDList().add(news.getId());
+        topicAux.save(); // Actualiza o ficheiro de tópicos
+        pub.save();
 
         // Tenta notificar todos os subscribers deste topico
         notify(topicAux.getId());
@@ -112,7 +118,12 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
             }
 
 		topicAux.save(); // Actualiza o ficheiro de tópicos
+        pub.save();
 	}
+
+    public void saveSubscriber(Subscriber s) throws IOException {
+        s.save();
+    }
 
     // P1, recebe id, título e descrição para criar um tópico novo.
 	public void addTopic(Topic topic) throws IOException {
@@ -122,19 +133,19 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
 
     // region Create
     public Account createAccount(String username, String password, String passwordConfirm, int rank)
-        throws RemoteException, PasswordNotMatchingException, UsernameTakenException, NoSuchAlgorithmException {
-
-        return new Account(username, password, passwordConfirm, rank);
+            throws IOException, PasswordNotMatchingException, UsernameTakenException, NoSuchAlgorithmException, NoSuchProviderException {
+        if(rank == 1)
+            return new Publisher(username, password, passwordConfirm, rank);
+        return new Subscriber(username, password, passwordConfirm, rank);
     }
 
     public News createNews(String title, char[] content, String topicID, Publisher publisher)
-        throws RemoteException, NullPointerException, ArrayIndexOutOfBoundsException {
-
+            throws IOException, NullPointerException, ArrayIndexOutOfBoundsException {
         return new News(title, content, topicID, publisher);
     }
 
     public Topic createTopic(String id, String title, String description)
-        throws RemoteException, TopicIDTakenException {
+            throws IOException, TopicIDTakenException {
 
         return new Topic(id, title, description);
     }
@@ -149,7 +160,7 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
         return news.getTopic();
     }
 
-    public ArrayList<Topic> getAllTopics() throws RemoteException {
+    public ArrayList<Topic> getAllTopics() throws RemoteException, IndexOutOfBoundsException {
         return new ArrayList<>(Topic.getTopicHashMap().values());
     }
 
@@ -158,11 +169,11 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
     }
 
     public ArrayList<News> getAllNews() throws RemoteException {
-        Collection<News> x = News.getNewsHashMap().values();
+        ArrayList<News> x = new ArrayList<>(News.getNewsHashMap().values());
 
-        ((List<News>) x).sort(Comparator.comparing(News::getDate));
+        x.sort(Comparator.comparing(News::getDate));
 
-        return new ArrayList<>(x);
+        return x;
     }
 
     public ArrayList<News> getNewsFromTopic(Topic topic) throws RemoteException {
@@ -177,7 +188,7 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
         return new ArrayList<>(Account.getAccountHashMap().values());
     }
 
-    public Account getAccountFromID(String accountID) throws RemoteException {
+    public Account getAccountFromID(String accountID) throws RemoteException, AccountNotFoundException {
         return Account.getAccountFromID(accountID);
     }
 

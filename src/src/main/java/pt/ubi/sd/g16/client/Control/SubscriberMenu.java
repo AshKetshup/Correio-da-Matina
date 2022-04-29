@@ -4,6 +4,7 @@ import com.ashketshup.Landmark.ScreenManager;
 import com.ashketshup.Landmark.Screens.Menu;
 import com.ashketshup.Landmark.TUI.Notifications;
 import com.ashketshup.Landmark.UIElements.Option;
+import pt.ubi.sd.g16.client.NotificationThread;
 import pt.ubi.sd.g16.client.Session;
 import pt.ubi.sd.g16.server.ServerInterface;
 
@@ -27,11 +28,12 @@ public class SubscriberMenu {
     }
 
     public static Menu generate(ScreenManager screenManager, ServerInterface serverInterface) {
+
         SubscriberMenu.screenManager = screenManager;
         SubscriberMenu.serverInterface = serverInterface;
 
         return new Menu(
-            "Welcome" + Session.getSessionAccount().getID() + "!",
+            "Welcome " + Session.getSessionAccount().getID() + "!",
             List.of(
                 new Option("Subscribe Topic", SubscriberMenu::subscribeTopic),
                 new Option("Consult News", SubscriberMenu::consultNews),
