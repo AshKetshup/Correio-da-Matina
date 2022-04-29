@@ -152,7 +152,7 @@ public class Connection extends Thread{
         News n = null;
 
         try (FileReader fr = new FileReader(f)) { // Lê uma string Gson e transfere o seu conteúdo para variáveis
-            char[] chars = new char[(int) f.length()];
+            char[] chars = new char[(int) f.length()-2];
             fr.read(chars);
             String GsonLine = new String(chars);
             n = new News(GsonLine);  // Cria nova notícia com os conteúdos lidos

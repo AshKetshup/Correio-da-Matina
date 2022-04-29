@@ -29,13 +29,9 @@ public class ServerMain extends UnicastRemoteObject {
         System.setSecurityManager(new SecurityManager());
 
         if (args.length == 0) {
-            try {
-                serverName = Input.readString("Please insert server domain or IP (Empty for localhost):");
-                if (serverName.isEmpty())
-                    serverName = InetAddress.getLocalHost().getHostName();
-            } catch (UnknownHostException e) {
-                Output.writeln(e.getMessage());
-            }
+            serverName = Input.readString("Please insert server domain or IP (Empty for localhost):");
+            if (serverName.isEmpty())
+                serverName = getIP();
         } else
             serverName = args[0];
 
@@ -81,6 +77,20 @@ public class ServerMain extends UnicastRemoteObject {
         } catch (SocketException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public static String getIP(){
+        try {
+            Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
+            NetworkInterface n = e.nextElement();
+            Enumeration<InetAddress> ee = n.getInetAddresses();
+            InetAddress i = ee.nextElement();
+            System.out.println(i.getHostAddress());
+            return i.getHostAddress();
+        } catch (SocketException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 
     public static String getServerName() {

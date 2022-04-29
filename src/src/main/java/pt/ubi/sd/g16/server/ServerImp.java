@@ -100,6 +100,7 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
         Publisher pub = Publisher.getPublisherFromID(news.getPublisherID());
 		Topic topicAux = Topic.getTopicFromID(news.getTopic().getId());
 		topicAux.addNews(news);
+        news.getTopic().getNewsIDList().add(news.getId());
         pub.getNewsIDList().add(news.getId());
         topicAux.save(); // Actualiza o ficheiro de tópicos
         pub.save();
@@ -114,6 +115,7 @@ public class ServerImp extends UnicastRemoteObject implements ServerInterface {
                     backupNews(newsID);
 
                     topicAux.deleteNewsID(topicAux.getNewsIDList().get(0));
+                    pub.deleteNewsID(topicAux.getNewsIDList().get(0));
                 }
             }
 
